@@ -1,11 +1,13 @@
 import 'dart:async';
 import 'package:flame/components.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:terra_defender/terra_defender.dart';
 
 class Typewriter extends TextComponent with HasGameRef<TerraDefender> {
   late double countdownTime; // The duration of the countdown in seconds.
-  late Duration typingSpeed = const Duration(milliseconds: 100);
+  late Duration typingSpeed;
+  late Duration destroyAfterDuration;
   late String textToType;
   late String currentText = "";
   bool destroyOnTypeCompleted;
@@ -13,7 +15,9 @@ class Typewriter extends TextComponent with HasGameRef<TerraDefender> {
   Typewriter(
       {this.textToType = "Alphabetical",
       position,
-      this.destroyOnTypeCompleted = false})
+      this.typingSpeed = const Duration(milliseconds: 100),
+      this.destroyAfterDuration = const Duration(seconds: 2),
+      this.destroyOnTypeCompleted = false,})
       : super(
           text: "Muahahahahahaha",
           textRenderer: TextPaint(
@@ -30,6 +34,34 @@ class Typewriter extends TextComponent with HasGameRef<TerraDefender> {
     //  countdown(dt);
 
     super.update(dt);
+  }
+
+  @override
+  void render(Canvas canvas) {
+  // Define the dimensions of the dialog
+  final rect = Rect.fromLTWH(-15, -15, size.x + 30, size.y + 35);
+  
+  // Define the paint for the background (black)
+  final backgroundPaint = Paint()..color = Colors.brown;
+  
+  // Define the paint for the outline (brown)
+  final outlinePaint = Paint()..color = Colors.brown;
+  
+  // Define the paint for the blue center
+  final bluePaint = Paint()..color = Colors.blue;
+  
+  // Draw the background
+  canvas.drawRect(rect, backgroundPaint);
+  
+  // Calculate dimensions for the inner rectangle (blue center)
+  final innerRect = Rect.fromLTWH(rect.left + 10, rect.top + 10, rect.width - 20, rect.height - 20);
+  
+  // Draw the outline (brown)
+  canvas.drawRect(innerRect, outlinePaint);
+  
+  // Draw the blue center
+  canvas.drawRect(innerRect, bluePaint);
+    super.render(canvas);
   }
 
   @override
@@ -52,7 +84,7 @@ class Typewriter extends TextComponent with HasGameRef<TerraDefender> {
 
     if (destroyOnTypeCompleted) {
       
-      await Future.delayed(const Duration(seconds: 2));
+      await Future.delayed(destroyAfterDuration);
 
       removeFromParent();
     }

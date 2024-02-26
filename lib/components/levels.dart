@@ -22,7 +22,6 @@ class Levels extends World with HasGameRef<TerraDefender>, KeyboardHandler {
 
   late TiledComponent level;
   late SpriteAnimationComponent solarBuilding;
-  late TextComponent typewriter = Typewriter(position: player.position * 2);
 
   bool canFireBullet = false;
   bool isFiringBullet = false;
@@ -31,8 +30,8 @@ class Levels extends World with HasGameRef<TerraDefender>, KeyboardHandler {
   //Milliseconds between bullet shots
   int fireRate = 300;
 
-   //Storing the collision blocks
-    List<CollissionBlock> collissionBlocks = [];
+  //Storing the collision blocks
+  List<CollissionBlock> collissionBlocks = [];
 
   @override
   FutureOr<void> onLoad() async {
@@ -51,9 +50,6 @@ class Levels extends World with HasGameRef<TerraDefender>, KeyboardHandler {
     priority = -1;
     //Sets the collission blocks from the level file in the collission block List on the player file
     player.collissionBlocks = collissionBlocks;
-
-    typewriter.priority = 10;
-    await add(typewriter);
 
     return super.onLoad();
   }
@@ -84,9 +80,8 @@ class Levels extends World with HasGameRef<TerraDefender>, KeyboardHandler {
     if (isFiringBullet) {
       return;
     }
-    
-    // typewriter.text = "Pressed";
 
+    // typewriter.text = "Pressed";
 
     //Right bullet path
     final posR = Vector2(game.player.position.x + player.width,
@@ -138,8 +133,6 @@ class Levels extends World with HasGameRef<TerraDefender>, KeyboardHandler {
 
             add(player);
 
-
-
             break;
           case "Enemy":
             add(Enemy(
@@ -150,40 +143,40 @@ class Levels extends World with HasGameRef<TerraDefender>, KeyboardHandler {
             ));
             break;
 
-            case "Trash":
+          case "Trash":
             // game.logger.d("Trash Detected");
             // game.logger.d(   Vector2(spawnPoint.x, spawnPoint.y),Vector2(spawnPoint.width, spawnPoint.height),);
-           game.cam.viewport.add(Trash(
+            game.cam.viewport.add(Trash(
               position: Vector2(spawnPoint.x, spawnPoint.y),
               size: Vector2(spawnPoint.width, spawnPoint.height),
             ));
 
-            
-                        add(Typewriter(
-              textToType: "Beyonciaga",
-              position: Vector2(spawnPoint.x, spawnPoint.y),
-              
-              ));
-
-
             break;
 
-            case "SolarBuilding":
-              solarBuilding = SolarBuilding(position: Vector2(spawnPoint.x, spawnPoint.y),
-              size: Vector2(spawnPoint.width, spawnPoint.height));
-              add(solarBuilding);
+          case "SolarBuilding":
+            solarBuilding = SolarBuilding(
+                position: Vector2(spawnPoint.x, spawnPoint.y),
+                size: Vector2(spawnPoint.width, spawnPoint.height));
+            add(solarBuilding);
+            break;
+
+          case "TextPrompt":
+            add(Typewriter(
+              textToType: "Pick Up the Trash",
+              position: Vector2(spawnPoint.x, spawnPoint.y),
+              destroyOnTypeCompleted: true,
+              destroyAfterDuration: const Duration(seconds: 4),
+              typingSpeed: const Duration(milliseconds: 70)
+            ));
             break;
           default:
         }
       }
     }
-
-
-
   }
-  
+
   void _addCollissions() {
-        //Gets the layers for the collision
+    //Gets the layers for the collision
     final collissionLayer = level.tileMap.getLayer<ObjectGroup>("Collisions");
 
     if (collissionLayer != null) {
@@ -210,10 +203,8 @@ class Levels extends World with HasGameRef<TerraDefender>, KeyboardHandler {
           //   game.logger.d("Col Added");
           //   collissionBlocks.add(block);
           //   add(block);
-
         }
       }
     }
   }
-  }
-
+}
