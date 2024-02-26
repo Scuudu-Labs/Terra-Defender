@@ -13,12 +13,12 @@ class ShootButton extends SpriteComponent with HasGameRef<TerraDefender>, TapCal
   FutureOr<void> onLoad() {
     // debugMode = true;
     sprite = Sprite(game.images.fromCache("HUD/ShootButton.png"));
-    size = Vector2.all(70);
-    // position = Vector2(560, 270);
-    position = Vector2(
-      game.size.x - margin - buttonSize, 
-      game.size.y -margin -buttonSize,
-    );
+    size = Vector2.all(106);
+    position = Vector2(1150, 570);
+    // position = Vector2(
+    //   game.size.x - margin - buttonSize, 
+    //   game.size.y -margin -buttonSize,
+    // );
 
 
     priority = 10;

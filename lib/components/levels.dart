@@ -5,6 +5,7 @@ import 'package:flame_tiled/flame_tiled.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/src/services/keyboard_key.g.dart';
 import 'package:flutter/src/services/raw_keyboard.dart';
+import 'package:terra_defender/components/Text_display.dart';
 import 'package:terra_defender/components/bullet.dart';
 import 'package:terra_defender/components/collision_block.dart';
 import 'package:terra_defender/components/enemy.dart';
@@ -21,6 +22,7 @@ class Levels extends World with HasGameRef<TerraDefender>, KeyboardHandler {
 
   late TiledComponent level;
   late SpriteAnimationComponent solarBuilding;
+  late TextComponent typewriter = Typewriter(position: player.position * 2);
 
   bool canFireBullet = false;
   bool isFiringBullet = false;
@@ -49,6 +51,9 @@ class Levels extends World with HasGameRef<TerraDefender>, KeyboardHandler {
     priority = -1;
     //Sets the collission blocks from the level file in the collission block List on the player file
     player.collissionBlocks = collissionBlocks;
+
+    typewriter.priority = 10;
+    await add(typewriter);
 
     return super.onLoad();
   }
@@ -79,6 +84,9 @@ class Levels extends World with HasGameRef<TerraDefender>, KeyboardHandler {
     if (isFiringBullet) {
       return;
     }
+    
+    // typewriter.text = "Pressed";
+
 
     //Right bullet path
     final posR = Vector2(game.player.position.x + player.width,
@@ -131,6 +139,7 @@ class Levels extends World with HasGameRef<TerraDefender>, KeyboardHandler {
             add(player);
 
 
+
             break;
           case "Enemy":
             add(Enemy(
@@ -148,6 +157,13 @@ class Levels extends World with HasGameRef<TerraDefender>, KeyboardHandler {
               position: Vector2(spawnPoint.x, spawnPoint.y),
               size: Vector2(spawnPoint.width, spawnPoint.height),
             ));
+
+            
+                        add(Typewriter(
+              textToType: "Beyonciaga",
+              position: Vector2(spawnPoint.x, spawnPoint.y),
+              
+              ));
 
 
             break;

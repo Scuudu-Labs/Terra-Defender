@@ -34,14 +34,7 @@
   <object id="3" name="Trasher" type="Enemy" x="1056" y="224" width="96" height="96"/>
   <object id="4" name="Trasher" type="Enemy" x="1056" y="320" width="96" height="96"/>
   <object id="5" name="Trasher" type="Enemy" x="1056" y="416" width="96" height="96"/>
-  <object id="6" name="Trasher" type="Enemy" x="1056" y="512" width="96" height="96"/>
-  <object id="7" name="Trasher" type="Enemy" x="1056" y="608" width="96" height="96">
-   <properties>
-    <property name="offNeg" type="float" value="15"/>
-    <property name="offPos" type="float" value="6"/>
-   </properties>
-  </object>
-  <object id="8" type="SolarBuilding" x="224" y="96" width="96" height="96"/>
+  <object id="8" type="SolarBuilding" x="320" y="64" width="160" height="160"/>
   <object id="22" name="Player" type="Player" x="96" y="256" width="96" height="96"/>
   <object id="17" name="PaperBag" type="Trash" x="384" y="192" width="64" height="64"/>
   <object id="18" name="PaperBag" type="Trash" x="512" y="352" width="64" height="64"/>
