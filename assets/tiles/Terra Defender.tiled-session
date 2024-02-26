@@ -3,25 +3,42 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "",
+    "activeFile": "Level_01.tmx",
     "expandedProjectPaths": [
+        "."
     ],
     "fileStates": {
         "C:/Users/Elvis Emezi/Documents/Unity/pixel_adventure/pixel_adventure/assets/tiles/Level-02.tmx": {
+            "expandedObjectLayers": [
+                2
+            ],
             "scale": 1.341875,
-            "selectedLayer": 1,
+            "selectedLayer": 2,
             "viewCenter": {
-                "x": 320.07452258966,
+                "x": 311.877037727061,
                 "y": 184.44340940847695
             }
         },
+        "C:/Users/Elvis Emezi/Documents/Unity/pixel_adventure/pixel_adventure/assets/tiles/Pixel Adventure.tsx": {
+            "scaleInDock": 1
+        },
         "Level_01.tmx": {
-            "scale": 0.75,
-            "selectedLayer": 1,
+            "expandedObjectLayers": [
+                2,
+                3
+            ],
+            "scale": 1,
+            "selectedLayer": 2,
             "viewCenter": {
-                "x": 766,
-                "y": 449.99999999999994
+                "x": 371.5,
+                "y": 367.5
             }
+        },
+        "Terra Defender.tsx": {
+            "scaleInDock": 0.33
+        },
+        "TerraMapTest.tsx": {
+            "scaleInDock": 0.25
         }
     },
     "last.imagePath": "C:/Users/Elvis Emezi/Documents/Unity/terra_defender/terra_defender/assets/images/Terrain",
@@ -29,9 +46,14 @@
     "map.lastUsedFormat": "tmx",
     "map.width": 40,
     "openFiles": [
+        "Level_01.tmx",
+        "C:/Users/Elvis Emezi/Documents/Unity/pixel_adventure/pixel_adventure/assets/tiles/Level-02.tmx"
     ],
     "project": "Terra Defender.tiled-project",
+    "property.type": "float",
     "recentFiles": [
+        "C:/Users/Elvis Emezi/Documents/Unity/pixel_adventure/pixel_adventure/assets/tiles/Level-02.tmx",
+        "Level_01.tmx"
     ],
     "tileset.lastUsedFormat": "tsx"
 }

@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/src/services/keyboard_key.g.dart';
 import 'package:flutter/src/services/raw_keyboard.dart';
 import 'package:terra_defender/components/bullet.dart';
+import 'package:terra_defender/components/collision_block.dart';
 import 'package:terra_defender/components/enemy.dart';
 import 'package:terra_defender/components/player.dart';
 import 'package:terra_defender/terra_defender.dart';
@@ -25,16 +26,26 @@ class Levels extends World with HasGameRef<TerraDefender>, KeyboardHandler {
   //Milliseconds between bullet shots
   int fireRate = 300;
 
+   //Storing the collision blocks
+    List<CollissionBlock> collissionBlocks = [];
+
   @override
   FutureOr<void> onLoad() async {
     level = await TiledComponent.load(
       "$levelName.tmx",
       Vector2.all(32),
     );
+    debugMode = true;
 
     add(level);
 
     _spawnObjects();
+    _addCollissions();
+    // add(ScreenHitbox());
+
+
+    //Sets the collission blocks from the level file in the collission block List on the player file
+    player.collissionBlocks = collissionBlocks;
 
     return super.onLoad();
   }
@@ -101,6 +112,7 @@ class Levels extends World with HasGameRef<TerraDefender>, KeyboardHandler {
     // logger.wtf("Fired Bullet");
   }
 
+  //Spaen in objects based on the position ifo gotten from the TIled.tmx file
   void _spawnObjects() {
     final spawnPointLayer = level.tileMap.getLayer<ObjectGroup>("SpawnPoints");
 
@@ -128,5 +140,43 @@ class Levels extends World with HasGameRef<TerraDefender>, KeyboardHandler {
         }
       }
     }
+
+
+
   }
-}
+  
+  void _addCollissions() {
+        //Gets the layers for the collision
+    final collissionLayer = level.tileMap.getLayer<ObjectGroup>("Collisions");
+
+    if (collissionLayer != null) {
+      for (final collision in collissionLayer.objects) {
+        switch (collision.class_) {
+          //Checks for platform class tag
+          case "Platform":
+            final platform = CollissionBlock(
+              position: Vector2(collision.x, collision.y),
+              size: Vector2(collision.width, collision.height),
+              isPlatform: true,
+            );
+
+            collissionBlocks.add(platform);
+
+            add(platform);
+            break;
+          default:
+          // //The remaining non platform blocks
+          //   final block = CollissionBlock(
+          //     position: Vector2(collision.x, collision.y),
+          //     size: Vector2(collision.width, collision.height),
+          //   );
+          //   game.logger.d("Col Added");
+          //   collissionBlocks.add(block);
+          //   add(block);
+
+        }
+      }
+    }
+  }
+  }
+

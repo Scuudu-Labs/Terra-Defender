@@ -128,22 +128,22 @@ class Enemy extends SpriteAnimationGroupComponent with HasGameRef<TerraDefender>
 
   }
 
-  void collidedWithPlayer() async {
-    if (player.velocity.y > 0 && player.y + player.height > position.y ) {
-      if (game.playSounds) {
-        // FlameAudio.play("Bounce.wav", volume: game.soundVolume);
-      }
-      gotStomped = true;
-      current = State.hit;
-      player.velocity.y = -_bounceHeight;
+  // void collidedWithPlayer() async {
+  //   if (player.velocity.y > 0 && player.y + player.height > position.y ) {
+  //     if (game.playSounds) {
+  //       // FlameAudio.play("Bounce.wav", volume: game.soundVolume);
+  //     }
+  //     gotStomped = true;
+  //     current = State.hit;
+  //     player.velocity.y = -_bounceHeight;
 
-      // await animationTicker?.completed;
-      removeFromParent();
-    }
-    else{
-      player.colliderWithEnemy();
-    }
-  }
+  //     // await animationTicker?.completed;
+  //     removeFromParent();
+  //   }
+  //   else{
+  //     player.colliderWithEnemy();
+  //   }
+  // }
 
   void gotHit(){
     game.logger.d("Hit Enemy");

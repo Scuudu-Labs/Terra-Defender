@@ -7,6 +7,7 @@ import 'package:logger/logger.dart';
 import 'package:terra_defender/components/bullet.dart';
 import 'package:terra_defender/components/levels.dart';
 import 'package:terra_defender/components/player.dart';
+import 'package:terra_defender/components/shoot_button.dart';
 
 class TerraDefender extends FlameGame  
 
@@ -22,12 +23,15 @@ class TerraDefender extends FlameGame
   Logger logger = Logger();
   Player player = Player(position: Vector2(500, 400));
   Bullet bullet = Bullet(timeBeforeDestroy: const Duration(seconds: 3));
-  late JoystickComponent joystick ;
 
+  late JoystickComponent joystick ;
+  late SpriteComponent shootButton = ShootButton();
   late CameraComponent cam;
+  late Levels zaWarudoo;
 
   bool playSounds = false;
-  bool showControls = false;
+  bool showControls = true;
+
   double soundVolume = 1.0;
 
 
@@ -42,7 +46,7 @@ class TerraDefender extends FlameGame
     await images.loadAllImages();
 
     // Levels zaWorld = Levels(levelName: levelNames[currentLevelIndex], player: player);
-    Levels zaWarudoo = Levels(levelName: "Level_01", player: player);
+    zaWarudoo = Levels(levelName: "Level_01", player: player);
 
     //Camera that sees the worls here
     cam = CameraComponent.withFixedResolution(world: zaWarudoo, width: 1280, height: 704);
@@ -50,12 +54,17 @@ class TerraDefender extends FlameGame
     //Code for anchoring the cam to the left
     cam.viewfinder.anchor = Anchor.topLeft;
 
+    //Adding the camera and the world
     addAll([cam, zaWarudoo, ]);
-
-    // add(player..priority = 2);
 
             if (showControls) {
       addJoystick();
+      cam.viewport.add(shootButton);
+
+
+    // debugMode = true;
+    
+
     }
 
     return super.onLoad();
@@ -92,7 +101,8 @@ class TerraDefender extends FlameGame
       // anchor: Anchor.center
     ).. priority = 10;
 
-    add(joystick);
+    // add(joystick);
+    cam.viewport.add(joystick);
   }
 
    void updateJoystick() {

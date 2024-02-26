@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="40" height="22" tilewidth="32" tileheight="32" infinite="0" nextlayerid="3" nextobjectid="9">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="40" height="22" tilewidth="32" tileheight="32" infinite="0" nextlayerid="4" nextobjectid="17">
  <tileset firstgid="1" source="Terra Defender.tsx"/>
  <tileset firstgid="881" source="TerraMapTest.tsx"/>
  <layer id="1" name="Background" width="40" height="22">
@@ -35,7 +35,18 @@
   <object id="4" name="Trasher" type="Enemy" x="1056" y="320" width="96" height="96"/>
   <object id="5" name="Trasher" type="Enemy" x="1056" y="416" width="96" height="96"/>
   <object id="6" name="Trasher" type="Enemy" x="1056" y="512" width="96" height="96"/>
-  <object id="7" name="Trasher" type="Enemy" x="1056" y="608" width="96" height="96"/>
+  <object id="7" name="Trasher" type="Enemy" x="1056" y="608" width="96" height="96">
+   <properties>
+    <property name="offNeg" type="float" value="15"/>
+    <property name="offPos" type="float" value="6"/>
+   </properties>
+  </object>
   <object id="8" name="Player" type="Player" x="384" y="512" width="96" height="96"/>
+ </objectgroup>
+ <objectgroup id="3" name="Collisions">
+  <object id="13" x="-32" y="0" width="1344" height="32"/>
+  <object id="14" name="Collisions" x="0" y="-32" width="32" height="768"/>
+  <object id="15" name="Collisions" x="-32" y="672" width="1344" height="32"/>
+  <object id="16" name="Collisions" x="1280" y="-32" width="32" height="768"/>
  </objectgroup>
 </map>
