@@ -9,6 +9,8 @@ import 'package:terra_defender/components/bullet.dart';
 import 'package:terra_defender/components/collision_block.dart';
 import 'package:terra_defender/components/enemy.dart';
 import 'package:terra_defender/components/player.dart';
+import 'package:terra_defender/components/solarBuilding.dart';
+import 'package:terra_defender/components/trash.dart';
 import 'package:terra_defender/terra_defender.dart';
 
 class Levels extends World with HasGameRef<TerraDefender>, KeyboardHandler {
@@ -18,6 +20,7 @@ class Levels extends World with HasGameRef<TerraDefender>, KeyboardHandler {
   final Player player;
 
   late TiledComponent level;
+  late SpriteAnimationComponent solarBuilding;
 
   bool canFireBullet = false;
   bool isFiringBullet = false;
@@ -43,7 +46,7 @@ class Levels extends World with HasGameRef<TerraDefender>, KeyboardHandler {
     _addCollissions();
     // add(ScreenHitbox());
 
-
+    priority = -1;
     //Sets the collission blocks from the level file in the collission block List on the player file
     player.collissionBlocks = collissionBlocks;
 
@@ -127,6 +130,7 @@ class Levels extends World with HasGameRef<TerraDefender>, KeyboardHandler {
 
             add(player);
 
+
             break;
           case "Enemy":
             add(Enemy(
@@ -135,6 +139,23 @@ class Levels extends World with HasGameRef<TerraDefender>, KeyboardHandler {
               offNeg: 10,
               offPos: 10,
             ));
+            break;
+
+            case "Trash":
+            // game.logger.d("Trash Detected");
+            // game.logger.d(   Vector2(spawnPoint.x, spawnPoint.y),Vector2(spawnPoint.width, spawnPoint.height),);
+           game.cam.viewport.add(Trash(
+              position: Vector2(spawnPoint.x, spawnPoint.y),
+              size: Vector2(spawnPoint.width, spawnPoint.height),
+            ));
+
+
+            break;
+
+            case "SolarBuilding":
+              solarBuilding = SolarBuilding(position: Vector2(spawnPoint.x, spawnPoint.y),
+              size: Vector2(spawnPoint.width, spawnPoint.height));
+              add(solarBuilding);
             break;
           default:
         }

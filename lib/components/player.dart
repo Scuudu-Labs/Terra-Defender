@@ -6,6 +6,7 @@ import 'package:flutter/src/services/raw_keyboard.dart';
 import 'package:terra_defender/components/bullet.dart';
 import 'package:terra_defender/components/collision_block.dart';
 import 'package:terra_defender/components/custom_hitbox.dart';
+import 'package:terra_defender/components/trash.dart';
 import 'package:terra_defender/components/utils.dart';
 import 'package:terra_defender/terra_defender.dart';
 
@@ -43,6 +44,7 @@ class Player extends SpriteAnimationGroupComponent with HasGameRef<TerraDefender
     // startPos = position;
     debugMode = true;
     size = Vector2.all(96);
+    priority = 11;
 
     _loadAllAnimations();
 
@@ -69,6 +71,10 @@ class Player extends SpriteAnimationGroupComponent with HasGameRef<TerraDefender
   void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
     if (other is Bullet) {
       game.logger.d("Is Hit");
+    }
+
+    if (other is Trash) {
+      other.collidedWithPlayer();
     }
 
      if (other is ScreenHitbox) {

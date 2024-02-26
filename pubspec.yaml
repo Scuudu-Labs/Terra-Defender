@@ -66,6 +66,8 @@ flutter:
   assets:
   - assets/images/Characters/John/
   - assets/images/Enemies/
+  - assets/images/Trash/
+  - assets/images/Buildings/
   - assets/images/Enemies/Trasher/
   - assets/images/HUD/
   - assets/images/Terrain/

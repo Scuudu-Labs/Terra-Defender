@@ -24,7 +24,7 @@ class TerraDefender extends FlameGame
   Player player = Player(position: Vector2(500, 400));
   Bullet bullet = Bullet(timeBeforeDestroy: const Duration(seconds: 3));
 
-  late JoystickComponent joystick ;
+  late JoystickComponent joystick;
   late SpriteComponent shootButton = ShootButton();
   late CameraComponent cam;
   late Levels zaWarudoo;
@@ -33,6 +33,8 @@ class TerraDefender extends FlameGame
   bool showControls = true;
 
   double soundVolume = 1.0;
+
+  late int trashCount = 0;
 
 
     //Sets the background color to match
@@ -57,9 +59,8 @@ class TerraDefender extends FlameGame
     //Adding the camera and the world
     addAll([cam, zaWarudoo, ]);
 
-            if (showControls) {
-      addJoystick();
-      cam.viewport.add(shootButton);
+    if (showControls) {
+      addMobileControls();
 
 
     // debugMode = true;
@@ -80,19 +81,19 @@ class TerraDefender extends FlameGame
   }
 
   
-  void addJoystick() {
+  void addMobileControls() {
     joystick = JoystickComponent(
       size: 32,
       
       priority: 10,
       knob: SpriteComponent(
-        size: Vector2.all(50),
+        size: Vector2.all(96),
         sprite: Sprite(
           images.fromCache("HUD/Knob.png"),
         ),
       ),
       background: SpriteComponent(
-        size: Vector2.all(70),
+        size: Vector2.all(106),
         sprite: Sprite(
           images.fromCache("HUD/Joystick.png"),
         ),
@@ -103,6 +104,8 @@ class TerraDefender extends FlameGame
 
     // add(joystick);
     cam.viewport.add(joystick);
+      cam.viewport.add(shootButton);
+
   }
 
    void updateJoystick() {
@@ -149,6 +152,8 @@ class TerraDefender extends FlameGame
         player.verticalMovement = 0;
         break;
     }
+
+
   }
 
 

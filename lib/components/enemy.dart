@@ -25,7 +25,6 @@ class Enemy extends SpriteAnimationGroupComponent with HasGameRef<TerraDefender>
   static const stepTime = 0.05;
   static const tileSize = 16;
   static const runSpeed = 80;
-  final double _bounceHeight = 300;
   final textureSize = Vector2(96, 96);
 
   double rangeNeg = 0;
