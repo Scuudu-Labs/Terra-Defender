@@ -19,12 +19,12 @@ class SolarBuilding extends SpriteAnimationComponent with HasGameRef<TerraDefend
   FutureOr<void> onLoad() {
     debugMode = true;
 
-    priority = -1;
+    priority = 10;
 
 
     add(RectangleHitbox(
       position: Vector2(hitbox.offsetX, hitbox.offsetY),
-      size: Vector2.all(90),
+      size: size,
       collisionType: CollisionType.passive,
     ));
 
@@ -47,8 +47,11 @@ class SolarBuilding extends SpriteAnimationComponent with HasGameRef<TerraDefend
     //  removeFromParent();
 
     }
+  }
 
- 
+  void gotHit(){
+    game.logger.d("Building Hit");
+    
   }
 
 

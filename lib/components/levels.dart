@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame_tiled/flame_tiled.dart';
 import 'package:flutter/cupertino.dart';
@@ -21,9 +22,8 @@ class Levels extends World with HasGameRef<TerraDefender>, KeyboardHandler {
   final Player player;
 
   late TiledComponent level;
-  late SpriteAnimationComponent solarBuilding;
+  // late SpriteAnimationComponent solarBuilding;
 
-  bool canFireBullet = false;
   bool isFiringBullet = false;
   bool isFiringLeft = false;
 
@@ -32,6 +32,16 @@ class Levels extends World with HasGameRef<TerraDefender>, KeyboardHandler {
 
   //Storing the collision blocks
   List<CollissionBlock> collissionBlocks = [];
+
+  List<Vector2> enemySpawnPoints = [];
+  List<Vector2> enemysize = [];
+
+
+  List<Vector2> solarBuildingSpawnPoints = [];
+  List<Vector2> solarBuildingSize = [];
+
+
+
 
   @override
   FutureOr<void> onLoad() async {
@@ -47,7 +57,7 @@ class Levels extends World with HasGameRef<TerraDefender>, KeyboardHandler {
     _addCollissions();
     // add(ScreenHitbox());
 
-    priority = -1;
+    priority = 10;
     //Sets the collission blocks from the level file in the collission block List on the player file
     player.collissionBlocks = collissionBlocks;
 
@@ -56,66 +66,53 @@ class Levels extends World with HasGameRef<TerraDefender>, KeyboardHandler {
 
   @override
   void update(double dt) {
-    if (player.scale.x > 0) {
-      isFiringLeft = false;
-    } else if (player.scale.x < 0) {
-      isFiringLeft = true;
-    }
+
 
     super.update(dt);
   }
 
   @override
   bool onKeyEvent(RawKeyEvent event, Set<LogicalKeyboardKey> keysPressed) {
+    
     if (keysPressed.contains(LogicalKeyboardKey.keyF)) {
-      canFireBullet = true;
-      fireBullet();
-    } else {
-      canFireBullet = false;
-    }
+      fireBullet(player, const Duration(seconds: 3));
+    } 
+
     return super.onKeyEvent(event, keysPressed);
   }
 
-  void fireBullet() {
-    if (isFiringBullet) {
-      return;
-    }
-
-    // typewriter.text = "Pressed";
+  void fireBullet(PositionComponent shooter, Duration timeBeforeDestroy){
 
     //Right bullet path
-    final posR = Vector2(game.player.position.x + player.width,
-        game.player.y + game.player.height / 2);
+    final posR = Vector2(shooter.x - shooter.width, shooter.y + shooter.height / 2);
     //Left bullet path
-    final posL = Vector2(game.player.position.x - player.width,
-        game.player.y + game.player.height / 2);
+    final posL = Vector2(shooter.x + shooter.width, shooter.y + shooter.height / 2);
 
     late final Vector2 pos;
+    late bool shootLeft = shooter.scale.x < 0;
 
-    if (player.scale.x > 0) {
+    if (shootLeft) {
       pos = posR;
-    } else if (player.scale.x < 0) {
+    } else{
       pos = posL;
     }
 
     final bullet = Bullet(
-        isShootingLeft: isFiringLeft,
+        isShootingLeft: shootLeft,
         position: pos,
-        timeBeforeDestroy: const Duration(seconds: 3),
+        timeBeforeDestroy: timeBeforeDestroy,
         bulletMoveSpeed: 300);
 
-    bullet.scale.x = player.scale.x;
+    bullet.scale.x = shooter.scale.x;
 
     add(bullet);
+  }
 
-    isFiringBullet = true;
-
-    //Wait for seconds
-    Future.delayed(Duration(milliseconds: fireRate), () {
-      isFiringBullet = false;
-    });
-
-    // logger.wtf("Fired Bullet");
+  void spawnEnemyDrop(PositionComponent dropper){
+    add(Trash(
+      position: dropper.position,
+      size: Vector2.all(64),
+    ));
   }
 
   //Spaen in objects based on the position ifo gotten from the TIled.tmx file
@@ -135,18 +132,23 @@ class Levels extends World with HasGameRef<TerraDefender>, KeyboardHandler {
 
             break;
           case "Enemy":
-            add(Enemy(
-              position: Vector2(spawnPoint.x, spawnPoint.y),
-              size: Vector2(spawnPoint.width, spawnPoint.height),
-              offNeg: 10,
-              offPos: 10,
-            ));
+
+          enemySpawnPoints.add(Vector2(spawnPoint.x, spawnPoint.y));
+          enemysize.add(Vector2(spawnPoint.width, spawnPoint.height));
+
+          //   add(Enemy(enemyType: EnemyType.towerDestroyers,
+          //     position: Vector2(spawnPoint.x, spawnPoint.y),
+          //     size: Vector2(spawnPoint.width, spawnPoint.height),
+          //     offNeg: 10,
+          //     offPos: 10,
+          //   ));
+
             break;
 
           case "Trash":
-            // game.logger.d("Trash Detected");
+            game.trashCount ++;
             // game.logger.d(   Vector2(spawnPoint.x, spawnPoint.y),Vector2(spawnPoint.width, spawnPoint.height),);
-            game.cam.viewport.add(Trash(
+            add(Trash(
               position: Vector2(spawnPoint.x, spawnPoint.y),
               size: Vector2(spawnPoint.width, spawnPoint.height),
             ));
@@ -154,19 +156,22 @@ class Levels extends World with HasGameRef<TerraDefender>, KeyboardHandler {
             break;
 
           case "SolarBuilding":
-            solarBuilding = SolarBuilding(
-                position: Vector2(spawnPoint.x, spawnPoint.y),
-                size: Vector2(spawnPoint.width, spawnPoint.height));
-            add(solarBuilding);
+          solarBuildingSpawnPoints.add(Vector2(spawnPoint.x, spawnPoint.y));
+          solarBuildingSize.add(Vector2(spawnPoint.width, spawnPoint.height));
+
+            // solarBuilding = SolarBuilding(
+            //     position: Vector2(spawnPoint.x, spawnPoint.y),
+            //     size: Vector2(spawnPoint.width, spawnPoint.height));
+            // add(solarBuilding);
             break;
 
           case "TextPrompt":
             add(Typewriter(
               textToType: "Pick Up the Trash",
               position: Vector2(spawnPoint.x, spawnPoint.y),
+              typingSpeed: const Duration(milliseconds: 70),
               destroyOnTypeCompleted: true,
-              destroyAfterDuration: const Duration(seconds: 4),
-              typingSpeed: const Duration(milliseconds: 70)
+              destroyAfterDuration: const Duration(seconds: 6),
             ));
             break;
           default:
@@ -206,5 +211,63 @@ class Levels extends World with HasGameRef<TerraDefender>, KeyboardHandler {
         }
       }
     }
+  }
+
+  void protectTowerPrompt(){
+            add(Typewriter(
+              textToType: "Protect the Solar Tower",
+              position: Vector2(player.position.x, player.position.y + (player.size.y * 2)),
+              typingSpeed: const Duration(milliseconds: 70),
+              destroyOnTypeCompleted: true,
+              destroyAfterDuration: const Duration(seconds: 3),
+          ));
+
+
+          //Wait for prompt 
+           Future.delayed(const Duration(seconds: 5), (){
+
+            for (var spPoint in game.zaWarudoo.enemySpawnPoints) {
+              for (var eSiz in game.zaWarudoo.enemysize) {
+                game.zaWarudoo.spawnEnemy(EnemyType.towerDestroyers, spPoint, eSiz);
+              }
+            }
+
+        });
+
+
+  }
+
+  void spawnSolarBuilding(){
+
+    add(SolarBuilding(
+      position: solarBuildingSpawnPoints[0],
+      size: Vector2.all(160),
+    ));
+
+        game.logger.d("Building Created");
+
+
+    solarBuildingSpawnPoints.removeAt(0);
+
+  }
+
+  void spawnEnemy(EnemyType enemyType, Vector2 pos, Vector2 siz){
+                add(Enemy(enemyType: enemyType,
+              position: pos,
+              size: siz,
+              offNeg: 10,
+              offPos: 10,
+            ));
+  }
+
+  void collectDroppedResourcesPrompt() {
+                add(Typewriter(
+              textToType: "Collect Dropped Resources",
+              position: Vector2(player.position.x, player.position.y + (player.size.y * 2)),
+              typingSpeed: const Duration(milliseconds: 70),
+              destroyOnTypeCompleted: true,
+              destroyAfterDuration: const Duration(seconds: 3),
+          ));
+
   }
 }

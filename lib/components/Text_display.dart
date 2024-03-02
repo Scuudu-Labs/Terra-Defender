@@ -68,6 +68,8 @@ class Typewriter extends TextComponent with HasGameRef<TerraDefender> {
   FutureOr<void> onLoad() {
     size = Vector2.all(200);
 
+    priority = 11;
+
     typeText(textToType, typingSpeed);
 
     return super.onLoad();
@@ -80,6 +82,7 @@ class Typewriter extends TextComponent with HasGameRef<TerraDefender> {
       await Future.delayed(delay);
 
       // game.logger.d(currentText);
+      
     }
 
     if (destroyOnTypeCompleted) {

@@ -3,8 +3,10 @@ import 'dart:async';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame_audio/flame_audio.dart';
+import 'package:terra_defender/components/Text_display.dart';
 import 'package:terra_defender/components/bullet.dart';
 import 'package:terra_defender/components/custom_hitbox.dart';
+import 'package:terra_defender/components/enemy.dart';
 import 'package:terra_defender/terra_defender.dart';
 
 class Trash extends SpriteAnimationComponent with HasGameRef<TerraDefender>, CollisionCallbacks{
@@ -18,9 +20,6 @@ class Trash extends SpriteAnimationComponent with HasGameRef<TerraDefender>, Col
   @override
   FutureOr<void> onLoad() {
     debugMode = true;
-
-    game.trashCount ++;
-
 
     priority = 10;
 
@@ -45,7 +44,7 @@ class Trash extends SpriteAnimationComponent with HasGameRef<TerraDefender>, Col
       // if(game.playSounds){FlameAudio.play("collect_fruit.wav", volume: game.soundVolume);}
     //  animation = SpriteAnimation.fromFrameData(game.images.fromCache("Items/Fruits/Collected.png"), SpriteAnimationData.sequenced(amount: 6, stepTime: stepTime, loop: false ,textureSize: Vector2.all(32)));
     //  await animationTicker?.completed;
-    game.logger.d("Trash Count ${game.trashCount}");
+    // game.logger.d("Trash Count ${game.trashCount}");
     checkTrashCollected();
 
      removeFromParent();
@@ -56,14 +55,20 @@ class Trash extends SpriteAnimationComponent with HasGameRef<TerraDefender>, Col
   }
 
       void checkTrashCollected(){
-      if (game.trashCount <= 0) {
+      if (game.trashCount <= 0 && !game.levelCleared) {
 
         Future.delayed(const Duration(milliseconds: 1500), (){
-          //Enable Building By bringing it to the front
-        game.zaWarudoo.solarBuilding.priority = 10;
-        });
-        
-        game.logger.d("Building Created");
+
+        game.zaWarudoo.spawnSolarBuilding();
+
+        game.zaWarudoo.protectTowerPrompt();
+
+      });
+
+
+      // }
+      // else{
+      //   game.zaWarudoo.collectDroppedResourcesPrompt();
       }
     }
 }

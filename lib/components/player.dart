@@ -27,8 +27,9 @@ class Player extends SpriteAnimationGroupComponent with HasGameRef<TerraDefender
 
   double horizontalMovement = 0;
   double verticalMovement = 0;
-  double moveSpeed = 100;
-  // double moveSpeed = 500;
+  // double moveSpeed = 100;
+  double moveSpeed = 500;
+  double playerHealth = 50;
 
   Vector2 velocity = Vector2.zero();
 
@@ -44,7 +45,7 @@ class Player extends SpriteAnimationGroupComponent with HasGameRef<TerraDefender
     // startPos = position;
     debugMode = true;
     size = Vector2.all(96);
-    priority = 11;
+    priority = 12;
 
     _loadAllAnimations();
 
@@ -60,6 +61,8 @@ class Player extends SpriteAnimationGroupComponent with HasGameRef<TerraDefender
     
     _updatePlayerState();
     _updatePlayerMovement(dt);
+    clampPlayerMovement();
+    
     // _checkHorizontalCollissions();
     // _checkVerticalCollissions();
 
@@ -69,40 +72,37 @@ class Player extends SpriteAnimationGroupComponent with HasGameRef<TerraDefender
 
   @override
   void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
-    if (other is Bullet) {
-      game.logger.d("Is Hit");
-    }
 
     if (other is Trash) {
       other.collidedWithPlayer();
     }
 
-     if (other is ScreenHitbox) {
-      // If there is a collision with the ScreenHitbox, adjust the player's position
-      // This example assumes a simple case where the player is a rectangle
-      game.logger.d("Screen Hit");
-      final srHitbox = pHitBox;
-      if (position.x < 0) {
-        position.x = 0; // Left collision
-      game.logger.d("Left Hit");
+    //  if (other is ScreenHitbox) {
+    //   // If there is a collision with the ScreenHitbox, adjust the player's position
+    //   // This example assumes a simple case where the player is a rectangle
+    //   game.logger.d("Screen Hit");
+    //   final srHitbox = pHitBox;
+    //   if (position.x < 0) {
+    //     position.x = 0; // Left collision
+    //   game.logger.d("Left Hit");
 
-      } else if (position.x + srHitbox.size.x > size.x) {
-        position.x = size.x - srHitbox.size.x; // Right collision
-      game.logger.d("Right Hit");
+    //   } else if (position.x + srHitbox.size.x > size.x) {
+    //     position.x = size.x - srHitbox.size.x; // Right collision
+    //   game.logger.d("Right Hit");
 
-      }
-      if (position.y < 0) {
-        position.y = 0; // Top collision
-      game.logger.d("Top Hit");
+    //   }
+    //   if (position.y < 0) {
+    //     position.y = 0; // Top collision
+    //   game.logger.d("Top Hit");
 
-      } else if (position.y + srHitbox.size.y > size.y) {
-        position.y = size.y - srHitbox.size.y; // Bottom collision
-      game.logger.d("Bottom Hit");
+    //   } else if (position.y + srHitbox.size.y > size.y) {
+    //     position.y = size.y - srHitbox.size.y; // Bottom collision
+    //   game.logger.d("Bottom Hit");
 
-      }
-      // Reset velocity if you want the player to stop moving upon collision
-      velocity.setZero();
-    }
+    //   }
+    //   // Reset velocity if you want the player to stop moving upon collision
+    //   velocity.setZero();
+    // }
     super.onCollision(intersectionPoints, other);
   }
 
@@ -127,6 +127,18 @@ class Player extends SpriteAnimationGroupComponent with HasGameRef<TerraDefender
 
 
     return super.onKeyEvent(event, keysPressed);
+  }
+  
+  void clampPlayerMovement(){
+        // Get the screen size from the game instance
+    final screenSize = gameRef.size;
+
+    // Clamp the player's x position to stay within the screen bounds
+    position.x = position.x.clamp(width, screenSize.x - width * 3.5);
+
+    // Clamp the player's y position to stay within the screen bounds
+    position.y = position.y.clamp(0, screenSize.y - height * 2);
+  
   }
 
 
@@ -253,6 +265,19 @@ class Player extends SpriteAnimationGroupComponent with HasGameRef<TerraDefender
   }
 
   void colliderWithEnemy() {}
+
+  void gotHit() {
+
+          playerHealth --;
+
+      if (playerHealth <= 0) {
+        removeFromParent();
+      }
+        
+      game.logger.d("Player Is Hit");
+
+      
+  }
 
 
 

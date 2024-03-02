@@ -27,11 +27,11 @@
                 3,
                 2
             ],
-            "scale": 1,
-            "selectedLayer": 2,
+            "scale": 0.75,
+            "selectedLayer": 1,
             "viewCenter": {
-                "x": 639.5,
-                "y": 351.5
+                "x": 583.3333333333334,
+                "y": 383.33333333333326
             }
         },
         "Terra Defender.tsx": {

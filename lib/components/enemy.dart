@@ -3,20 +3,29 @@ import 'dart:ui';
 
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
+import 'package:flame/effects.dart';
+import 'package:flame/geometry.dart';
+import 'package:flutter/material.dart';
+import 'package:terra_defender/components/bullet.dart';
 import 'package:terra_defender/components/player.dart';
+import 'package:terra_defender/components/solarBuilding.dart';
+import 'package:terra_defender/components/trash.dart';
 import 'package:terra_defender/terra_defender.dart';
 
 enum State{idle, run, hit}
+enum EnemyType{towerDestroyers, trashers, airPolluters}
 
 class Enemy extends SpriteAnimationGroupComponent with HasGameRef<TerraDefender>, CollisionCallbacks{
   // Chicken({position, size}) : super(position: position, size: size);
 
   //Shorthand
-   Enemy({super.position, super.size, this.offNeg = 0, this.offPos = 0,});
+   Enemy({super.position, super.size, required this.enemyType, this.offNeg = 0, this.offPos = 0,});
 
+  EnemyType enemyType;
   Vector2 velocity = Vector2.zero();
   double moveDirection = 1;
-  double targetDirection = -1;
+  double targetDirectionX = -1;
+  double targetDirectionY = -1;
   bool gotStomped = false;
    final double offNeg;
    final double offPos;
@@ -24,7 +33,7 @@ class Enemy extends SpriteAnimationGroupComponent with HasGameRef<TerraDefender>
    
   static const stepTime = 0.05;
   static const tileSize = 16;
-  static const runSpeed = 80;
+  static const enemyMoveSpeed = 40;
   final textureSize = Vector2(96, 96);
 
   double rangeNeg = 0;
@@ -35,19 +44,67 @@ class Enemy extends SpriteAnimationGroupComponent with HasGameRef<TerraDefender>
   late final SpriteAnimation _runAnimation;
   // late final SpriteAnimation _hitAnimation;
 
+  bool isFiringBulletLeft = false;
+
+  int fireRate = 2500;
+
+  double enemyHealth = 0;
+
+  bool isFiringEnemyBullet = false;
+
+  late final RectangleHitbox hitbox;
+
    @override
   FutureOr<void> onLoad() {
-    debugMode = true;
-    player = game.player;
+    game.enemyCount ++;
 
-    add(RectangleHitbox(
+    debugMode = true;
+    setEnemyHealth();
+    player = game.player;
+    priority = 11;
+
+    hitbox = RectangleHitbox(
       position: Vector2(15, 5),
       size: Vector2(60, 90),
-    ));
+    );
+
+    add(hitbox);
     _loadAllAnimations();
     _calculateRange();
+
+
+    // final moveEffect = MoveAlongPathEffect();
+    
+    // final bullet = Bullet(
+    //     isShootingLeft: true,
+    //     position: position,
+    //     timeBeforeDestroy: const Duration(seconds: 3),
+    //     bulletMoveSpeed: 300);
+
+    //     add(bullet);
+
+
     return super.onLoad();
   }
+
+  void fireEnemyBullet() {
+
+    if (isFiringEnemyBullet) {
+      return;
+    }
+
+    isFiringEnemyBullet = true;
+
+    game.zaWarudoo.fireBullet(this, const Duration(seconds: 5));
+
+    //Wait for seconds
+    Future.delayed(Duration(milliseconds: fireRate), () {isFiringEnemyBullet = false;});
+  }
+
+
+  //     // Do something with the hit component
+  //   }
+  // }
 
   @override
   void update(double dt) {
@@ -55,6 +112,9 @@ class Enemy extends SpriteAnimationGroupComponent with HasGameRef<TerraDefender>
       _updateState();
       _movement(dt);
     }
+
+    // performRaycast();
+    fireEnemyBullet();
 
     super.update(dt);
   }
@@ -93,20 +153,62 @@ class Enemy extends SpriteAnimationGroupComponent with HasGameRef<TerraDefender>
   }
   
   void _movement(dt) {
-    velocity.x = 0;
 
+//Move Towards TOwer Script
+//-----------------------------------------------------------------------------------------------------------------------
+// if (enemyType == EnemyType.towerDestroyers) {
+//       double solarBuildingOffset = (game.zaWarudoo.solarBuilding.scale.x > 0) ? 0 : -game.zaWarudoo.solarBuilding.width;
+//     double enemyOffset = (scale.x > 0) ? 0 : -width;
+
+//     velocity = Vector2.zero();
+
+//     targetDirectionX = (game.zaWarudoo.solarBuilding.x + solarBuildingOffset < position.x + enemyOffset) ? -1 : 1;
+//     targetDirectionY = (game.zaWarudoo.solarBuilding.y - solarBuildingOffset < position.y + enemyOffset) ? -1 : 1;
+
+//     velocity = Vector2(targetDirectionX * enemyMoveSpeed, targetDirectionY * enemyMoveSpeed);
+
+//     moveDirection = lerpDouble(moveDirection, targetDirectionX, 0.1)?? 1;
+
+//     position += velocity * dt;
+// }
+//-----------------------------------------------------------------------------------------------------------------------
+
+
+//    MOVE TOWARDS PLAYER SCRIPT
+//__________________________________________________________________________________________________
     double playerOffset = (player.scale.x > 0) ? 0 : -player.width;
     double enemyOffset = (scale.x > 0) ? 0 : -width;
 
-    if (playerInRange()) {
-      //Player In Range
-      targetDirection = (player.x + playerOffset < position.x + enemyOffset) ? -1 : 1;
-      velocity.x = targetDirection * runSpeed;
-    }
+    velocity = Vector2.zero();
 
-    moveDirection = lerpDouble(moveDirection, targetDirection, 0.1)?? 1;
+    targetDirectionX = (player.x + playerOffset < position.x + enemyOffset) ? -1 : 1;
+    targetDirectionY = (player.y + playerOffset < position.y + enemyOffset) ? -1 : 1;
 
-    position.x += velocity.x * dt;
+    velocity = Vector2(targetDirectionX * enemyMoveSpeed, targetDirectionY * enemyMoveSpeed);
+
+    moveDirection = lerpDouble(moveDirection, targetDirectionX, 0.1)?? 1;
+
+    position += velocity * dt;
+//__________________________________________________________________________________________________
+
+
+    //-------------------------------------------------------------------------
+    //Move to Player LOgic
+    // velocity.x = 0;
+
+    // double playerOffset = (player.scale.x > 0) ? 0 : -player.width;
+    // double enemyOffset = (scale.x > 0) ? 0 : -width;
+
+    // if (playerInRange()) {
+    //   //Player In Range
+    //   targetDirection = (player.x + playerOffset < position.x + enemyOffset) ? -1 : 1;
+    //   velocity.x = targetDirection * runSpeed;
+    // }
+
+    // moveDirection = lerpDouble(moveDirection, targetDirection, 0.1)?? 1;
+
+    // position.x += velocity.x * dt;
+    //-------------------------------------------------------------------------
   }
 
   bool playerInRange(){
@@ -145,7 +247,31 @@ class Enemy extends SpriteAnimationGroupComponent with HasGameRef<TerraDefender>
   // }
 
   void gotHit(){
-    game.logger.d("Hit Enemy");
+    enemyHealth --;
+
+    if (enemyHealth <= 0) {
+    game.logger.d("Killed Enemy");
+    game.zaWarudoo.spawnEnemyDrop(this);
+
+    game.logger.d("Enemy COunt: ${game.enemyCount}");
+          
+    if (game.enemyCount <= 0) {
+      game.levelCleared = true;
+
+      game.zaWarudoo.collectDroppedResourcesPrompt();
+
+      }
     removeFromParent();
+    }
+
+  }
+  
+  void setEnemyHealth() {
+    switch (enemyType) {
+      case EnemyType.towerDestroyers:
+        enemyHealth = 7;
+        break;
+      default:
+    }
   }
 }  

@@ -18,19 +18,20 @@ class TerraDefender extends FlameGame
         TapCallbacks {
   Logger logger = Logger();
   Player player = Player(position: Vector2(500, 400));
-  Bullet bullet = Bullet(timeBeforeDestroy: const Duration(seconds: 3));
 
   late JoystickComponent joystick;
   late SpriteComponent shootButton = ShootButton();
   late CameraComponent cam;
   late Levels zaWarudoo;
 
-  bool playSounds = false;
-  bool showControls = true;
+  bool soundOn = false;
+  bool showControls = false;
+  bool levelCleared = false;
 
   double soundVolume = 1.0;
 
   late int trashCount = 0;
+  late int enemyCount = 0;
 
   //Sets the background color to match
   @override
