@@ -3,17 +3,14 @@ import 'dart:ui';
 
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
-import 'package:flame/effects.dart';
-import 'package:flame/geometry.dart';
-import 'package:flutter/material.dart';
 import 'package:terra_defender/components/bullet.dart';
 import 'package:terra_defender/components/player.dart';
 import 'package:terra_defender/components/solarBuilding.dart';
-import 'package:terra_defender/components/trash.dart';
+import 'package:terra_defender/components/tree.dart';
 import 'package:terra_defender/terra_defender.dart';
 
 enum State{idle, run, hit}
-enum EnemyType{towerDestroyers, trashers, airPolluters}
+enum EnemyType{towerDestroyer, trasher, deforester, airPolluter, noisePolluter}
 
 class Enemy extends SpriteAnimationGroupComponent with HasGameRef<TerraDefender>, CollisionCallbacks{
   // Chicken({position, size}) : super(position: position, size: size);
@@ -40,7 +37,7 @@ class Enemy extends SpriteAnimationGroupComponent with HasGameRef<TerraDefender>
   double rangePos = 0;
 
   late final Player player;
-  late final SpriteAnimation _idleAnimation;
+  // late final SpriteAnimation _idleAnimation;
   late final SpriteAnimation _runAnimation;
   // late final SpriteAnimation _hitAnimation;
 
@@ -52,13 +49,16 @@ class Enemy extends SpriteAnimationGroupComponent with HasGameRef<TerraDefender>
 
   bool isFiringEnemyBullet = false;
 
+  bool isDead = false;
+
   late final RectangleHitbox hitbox;
 
    @override
   FutureOr<void> onLoad() {
     game.enemyCount ++;
+    game.levelCleared == false;
 
-    debugMode = true;
+    // debugMode = true;
     setEnemyHealth();
     player = game.player;
     priority = 11;
@@ -72,18 +72,6 @@ class Enemy extends SpriteAnimationGroupComponent with HasGameRef<TerraDefender>
     _loadAllAnimations();
     _calculateRange();
 
-
-    // final moveEffect = MoveAlongPathEffect();
-    
-    // final bullet = Bullet(
-    //     isShootingLeft: true,
-    //     position: position,
-    //     timeBeforeDestroy: const Duration(seconds: 3),
-    //     bulletMoveSpeed: 300);
-
-    //     add(bullet);
-
-
     return super.onLoad();
   }
 
@@ -95,11 +83,27 @@ class Enemy extends SpriteAnimationGroupComponent with HasGameRef<TerraDefender>
 
     isFiringEnemyBullet = true;
 
-    game.zaWarudoo.fireBullet(this, const Duration(seconds: 5));
+    game.zaWarudoo.fireBullet(this, const Duration(seconds: 5), setBulletType());
 
     //Wait for seconds
     Future.delayed(Duration(milliseconds: fireRate), () {isFiringEnemyBullet = false;});
   }
+
+BulletType setBulletType(){
+    switch (enemyType) {
+        case EnemyType.trasher:
+            return BulletType.trasher;
+        case EnemyType.airPolluter:
+            return BulletType.airPolluter;
+        case EnemyType.noisePolluter:
+            return BulletType.noisePolluter;
+        case EnemyType.towerDestroyer:
+            return BulletType.towerDestroyer;
+        default:
+            return BulletType.trasher;
+    }
+}
+
 
 
   //     // Do something with the hit component
@@ -120,12 +124,12 @@ class Enemy extends SpriteAnimationGroupComponent with HasGameRef<TerraDefender>
   }
   
   void _loadAllAnimations() {
-    _idleAnimation = _spriteAnimation("idle", 12);
+    // _idleAnimation = _spriteAnimation("idle", 12);
     _runAnimation = _spriteAnimation("running", 12);
     // _hitAnimation = _spriteAnimation("Hit", 5)..loop = false;
 
     animations = {
-        State.idle: _idleAnimation,
+        // State.idle: _idleAnimation,
         State.run: _runAnimation,
         // State.hit: _hitAnimation,
     };
@@ -136,8 +140,26 @@ class Enemy extends SpriteAnimationGroupComponent with HasGameRef<TerraDefender>
 
 
   SpriteAnimation _spriteAnimation(String state, int amount){
+
+    String enemyName = "";
+
+    switch (enemyType) {
+      case EnemyType.towerDestroyer:
+      enemyName = "Trasher";
+      break;
+      case EnemyType.trasher:
+        // enemyName = "Trasher";
+        break;
+      case EnemyType.noisePolluter:
+        enemyName = "Noisers";
+        break;
+      default:
+    }
+
     return SpriteAnimation.fromFrameData(
-      game.images.fromCache("Enemies/Trasher/$state.png"), 
+      
+
+      game.images.fromCache("Enemies/$enemyName/$state.png"), 
       SpriteAnimationData.sequenced(
 
         amount: amount, 
@@ -151,8 +173,70 @@ class Enemy extends SpriteAnimationGroupComponent with HasGameRef<TerraDefender>
     rangeNeg = position.x - offNeg * tileSize;
     rangePos = position.x + offPos * tileSize;
   }
+
+   SolarBuilding? findClosestBuilding(List<SolarBuilding> solarBuildingList) {
+    SolarBuilding? closest;
+    double closestDistance = double.infinity;
+
+    for (final solarBuilding in solarBuildingList) {
+      final double distance = position.distanceTo(solarBuilding.position);
+      if (distance < closestDistance) {
+        closestDistance = distance;
+        closest = solarBuilding;
+      }
+    }
+
+    return closest;
+  }
+  
+   Tree? findClosestTree(List<Tree> trees) {
+    Tree? closest;
+    double closestDistance = double.infinity;
+
+    for (final solarBuilding in trees) {
+      final double distance = position.distanceTo(solarBuilding.position);
+      if (distance < closestDistance) {
+        closestDistance = distance;
+        closest = solarBuilding;
+      }
+    }
+
+    return closest;
+  }
   
   void _movement(dt) {
+
+
+  final attackables = game.zaWarudoo.solarBuildings;
+
+  final attackableTree = game.zaWarudoo.trees;
+
+  final closest = game.currentLevelIndex > 0 ? findClosestTree(attackableTree) : findClosestBuilding(attackables);
+
+      if (closest != null) {
+      // targetPosition = closest.position;
+      // moveTowardsTarget(dt);
+      
+
+//    MOVE TOWARDS SOLAR TOWER SCRIPT
+//__________________________________________________________________________________________________
+    double buildingOffset = (closest.scale.x > 0) ? closest.width : -closest.width;
+    double enemyOffset = (scale.x > 0) ? width : -width;
+
+    velocity = Vector2.zero();
+
+    targetDirectionX = (closest.x + buildingOffset < position.x + enemyOffset) ? -1 : 1;
+    targetDirectionY = (closest.y < position.y) ? -1 : 1;
+
+    velocity = Vector2(targetDirectionX * enemyMoveSpeed, targetDirectionY * enemyMoveSpeed);
+
+    moveDirection = lerpDouble(moveDirection, targetDirectionX, 0.1)?? 1;
+    // moveDirection = targetDirectionX;
+
+    // position += velocity * dt;
+    position.add(velocity * dt);
+//__________________________________________________________________________________________________
+    }
 
 //Move Towards TOwer Script
 //-----------------------------------------------------------------------------------------------------------------------
@@ -176,22 +260,26 @@ class Enemy extends SpriteAnimationGroupComponent with HasGameRef<TerraDefender>
 
 //    MOVE TOWARDS PLAYER SCRIPT
 //__________________________________________________________________________________________________
-    double playerOffset = (player.scale.x > 0) ? 0 : -player.width;
-    double enemyOffset = (scale.x > 0) ? 0 : -width;
+    // double playerOffset = (player.scale.x > 0) ? player.width : -player.width;
+    // double enemyOffset = (scale.x > 0) ? width : -width;
 
-    velocity = Vector2.zero();
+    // velocity = Vector2.zero();
 
-    targetDirectionX = (player.x + playerOffset < position.x + enemyOffset) ? -1 : 1;
-    targetDirectionY = (player.y + playerOffset < position.y + enemyOffset) ? -1 : 1;
+    // targetDirectionX = (player.x + playerOffset < position.x + enemyOffset) ? -1 : 1;
+    // targetDirectionY = (player.y < position.y) ? -1 : 1;
 
-    velocity = Vector2(targetDirectionX * enemyMoveSpeed, targetDirectionY * enemyMoveSpeed);
+    // velocity = Vector2(targetDirectionX * enemyMoveSpeed, targetDirectionY * enemyMoveSpeed);
 
-    moveDirection = lerpDouble(moveDirection, targetDirectionX, 0.1)?? 1;
+    // moveDirection = lerpDouble(moveDirection, targetDirectionX, 0.1)?? 1;
+    // // moveDirection = targetDirectionX;
 
-    position += velocity * dt;
+    // // position += velocity * dt;
+    // position.add(velocity * dt);
 //__________________________________________________________________________________________________
 
 
+    //SCALE = -1 MEANS FLIPPED
+    //SCALE = 1 MEANS NORMAL
     //-------------------------------------------------------------------------
     //Move to Player LOgic
     // velocity.x = 0;
@@ -211,6 +299,7 @@ class Enemy extends SpriteAnimationGroupComponent with HasGameRef<TerraDefender>
     //-------------------------------------------------------------------------
   }
 
+
   bool playerInRange(){
     double playerOffset = (player.scale.x > 0) ? 0 : -player.width;
 
@@ -229,33 +318,18 @@ class Enemy extends SpriteAnimationGroupComponent with HasGameRef<TerraDefender>
 
   }
 
-  // void collidedWithPlayer() async {
-  //   if (player.velocity.y > 0 && player.y + player.height > position.y ) {
-  //     if (game.playSounds) {
-  //       // FlameAudio.play("Bounce.wav", volume: game.soundVolume);
-  //     }
-  //     gotStomped = true;
-  //     current = State.hit;
-  //     player.velocity.y = -_bounceHeight;
-
-  //     // await animationTicker?.completed;
-  //     removeFromParent();
-  //   }
-  //   else{
-  //     player.colliderWithEnemy();
-  //   }
-  // }
 
   void gotHit(){
     enemyHealth --;
-
-    if (enemyHealth <= 0) {
-    game.logger.d("Killed Enemy");
+  
+    if (enemyHealth <= 0 && !isDead) {
+      //Prevents more than one resource drop
+      isDead = true;
     game.zaWarudoo.spawnEnemyDrop(this);
-
-    game.logger.d("Enemy COunt: ${game.enemyCount}");
+    game.enemyCount --;
           
     if (game.enemyCount <= 0) {
+
       game.levelCleared = true;
 
       game.zaWarudoo.collectDroppedResourcesPrompt();
@@ -268,9 +342,13 @@ class Enemy extends SpriteAnimationGroupComponent with HasGameRef<TerraDefender>
   
   void setEnemyHealth() {
     switch (enemyType) {
-      case EnemyType.towerDestroyers:
-        enemyHealth = 7;
+      case EnemyType.towerDestroyer:
+        enemyHealth = 1;
         break;
+
+      case EnemyType.noisePolluter:
+      enemyHealth = 2;
+      break;
       default:
     }
   }

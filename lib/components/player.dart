@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flutter/src/services/raw_keyboard.dart';
-import 'package:terra_defender/components/bullet.dart';
 import 'package:terra_defender/components/collision_block.dart';
 import 'package:terra_defender/components/custom_hitbox.dart';
 import 'package:terra_defender/components/trash.dart';
@@ -43,7 +42,7 @@ class Player extends SpriteAnimationGroupComponent with HasGameRef<TerraDefender
   @override
   FutureOr<void> onLoad() async {
     // startPos = position;
-    debugMode = true;
+    // debugMode = true;
     size = Vector2.all(96);
     priority = 12;
 
@@ -131,13 +130,17 @@ class Player extends SpriteAnimationGroupComponent with HasGameRef<TerraDefender
   
   void clampPlayerMovement(){
         // Get the screen size from the game instance
-    final screenSize = gameRef.size;
+    // final screenSize = gameRef.size;
 
     // Clamp the player's x position to stay within the screen bounds
-    position.x = position.x.clamp(width, screenSize.x - width * 3.5);
+    // position.x = position.x.clamp(width, screenSize.x - width * 3.5);
+    // position.x = position.x.clamp(width, game.size.x + width * 3.5);
+    position.x = position.x.clamp(width, 1280.00 - width);
 
     // Clamp the player's y position to stay within the screen bounds
-    position.y = position.y.clamp(0, screenSize.y - height * 2);
+    // position.y = position.y.clamp(0, screenSize.y - height * 2);
+    // position.y = position.y.clamp(0, game.size.y + height * 2.25);
+    position.y = position.y.clamp(0, 704.00 - height);
   
   }
 
@@ -274,7 +277,7 @@ class Player extends SpriteAnimationGroupComponent with HasGameRef<TerraDefender
         removeFromParent();
       }
         
-      game.logger.d("Player Is Hit");
+      // game.logger.d("Player Is Hit");
 
       
   }

@@ -15,8 +15,8 @@
             "scale": 1.341875,
             "selectedLayer": 2,
             "viewCenter": {
-                "x": 311.87703772706107,
-                "y": 184.44340940847698
+                "x": 311.877037727061,
+                "y": 184.44340940847695
             }
         },
         "C:/Users/Elvis Emezi/Documents/Unity/pixel_adventure/pixel_adventure/assets/tiles/Pixel Adventure.tsx": {
@@ -24,14 +24,25 @@
         },
         "Level_01.tmx": {
             "expandedObjectLayers": [
-                3,
-                2
+                2,
+                3
             ],
-            "scale": 0.75,
+            "scale": 0.5,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 583.3333333333334,
-                "y": 383.33333333333326
+                "x": 687,
+                "y": 555
+            }
+        },
+        "Level_02.tmx": {
+            "expandedObjectLayers": [
+                2
+            ],
+            "scale": 0.5,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 703,
+                "y": 449
             }
         },
         "Terra Defender.tsx": {

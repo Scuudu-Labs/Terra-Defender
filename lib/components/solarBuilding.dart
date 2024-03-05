@@ -2,8 +2,6 @@ import 'dart:async';
 
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
-import 'package:flame_audio/flame_audio.dart';
-import 'package:terra_defender/components/bullet.dart';
 import 'package:terra_defender/components/custom_hitbox.dart';
 import 'package:terra_defender/terra_defender.dart';
 
@@ -15,9 +13,11 @@ class SolarBuilding extends SpriteAnimationComponent with HasGameRef<TerraDefend
   final hitbox = CustomHitbox(offsetX: 10, offsetY: 10, width: 12, height: 12);
   bool collected = false;
 
+  double towerHealth = 10;
+
   @override
   FutureOr<void> onLoad() {
-    debugMode = true;
+    // debugMode = true;
 
     priority = 10;
 
@@ -50,7 +50,13 @@ class SolarBuilding extends SpriteAnimationComponent with HasGameRef<TerraDefend
   }
 
   void gotHit(){
-    game.logger.d("Building Hit");
+    // game.logger.d("Building Hit");
+    towerHealth --;
+
+    if (towerHealth <= 0) {
+      game.zaWarudoo.solarBuildings.remove(this);
+      removeFromParent();
+    }
     
   }
 

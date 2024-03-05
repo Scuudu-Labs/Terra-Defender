@@ -67,8 +67,12 @@ flutter:
   - assets/images/Characters/John/
   - assets/images/Enemies/
   - assets/images/Trash/
+  - assets/images/Trees/
   - assets/images/Buildings/
   - assets/images/Enemies/Trasher/
+  - assets/images/Enemies/Noisers/
+  - assets/images/Enemies/AirPolluter/
+  - assets/images/Enemies/Deforester/
   - assets/images/HUD/
   - assets/images/Terrain/
   - assets/images/

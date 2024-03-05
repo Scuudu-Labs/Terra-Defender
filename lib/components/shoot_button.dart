@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
-import 'package:terra_defender/components/enemy.dart';
+import 'package:terra_defender/components/bullet.dart';
 import 'package:terra_defender/terra_defender.dart';
 
 class ShootButton extends SpriteComponent with HasGameRef<TerraDefender>, TapCallbacks{
@@ -30,7 +30,7 @@ class ShootButton extends SpriteComponent with HasGameRef<TerraDefender>, TapCal
 @override
   void onTapDown(TapDownEvent event) {
     // game.player.hasJumped = true;
-    game.zaWarudoo.fireBullet(game.player, const Duration(seconds: 3));
+    game.zaWarudoo.fireBullet(game.player, const Duration(seconds: 3), BulletType.player);
     super.onTapDown(event);
   }
 

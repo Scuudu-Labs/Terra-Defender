@@ -7,7 +7,7 @@ class CollissionBlock extends PositionComponent{
   {
     
     //Debug Obstacles
-    debugMode = true;
+    // debugMode = true;
     
     }
 
