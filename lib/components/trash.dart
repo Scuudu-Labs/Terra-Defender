@@ -67,9 +67,10 @@ class Trash extends SpriteAnimationComponent with HasGameRef<TerraDefender>, Col
       // if(game.playSounds){FlameAudio.play("collect_fruit.wav", volume: game.soundVolume);}
     //  animation = SpriteAnimation.fromFrameData(game.images.fromCache("Items/Fruits/Collected.png"), SpriteAnimationData.sequenced(amount: 6, stepTime: stepTime, loop: false ,textureSize: Vector2.all(32)));
     //  await animationTicker?.completed;
-    game.logger.d("Trash Count ${game.trashCount}");
-    game.logger.d("Enemy Count ${game.enemyCount}");
-    game.logger.d("Level Cleared ${game.levelCleared}");
+    // game.logger.d("Trash Count ${game.trashCount}");
+    // game.logger.d("Enemy Count ${game.enemyCount}");
+    // game.logger.d("Tower COunt ${game.towerCount}");
+    // game.logger.d("Level Cleared ${game.levelCleared}");
     checkTrashCollected();
 
      removeFromParent();

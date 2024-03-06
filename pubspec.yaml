@@ -69,6 +69,7 @@ flutter:
   - assets/images/Trash/
   - assets/images/Trees/
   - assets/images/Buildings/
+  - assets/images/Background/
   - assets/images/Enemies/Trasher/
   - assets/images/Enemies/Noisers/
   - assets/images/Enemies/AirPolluter/

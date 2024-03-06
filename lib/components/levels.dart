@@ -101,6 +101,7 @@ class Levels extends World with HasGameRef<TerraDefender>, KeyboardHandler {
     final bullet = Bullet(
         isShootingLeft: shootLeft,
         position: pos,
+        size:  Vector2(30, 20),
         timeBeforeDestroy: timeBeforeDestroy,
         bulletMoveSpeed: fireRate,
         bulletType: bulletType
@@ -146,8 +147,8 @@ class Levels extends World with HasGameRef<TerraDefender>, KeyboardHandler {
           if(game.currentLevelIndex > 0){
            late String enemyNam = spawnPoint.name;
 
-            if (enemyNam == "Noisers") {
-                          add(Enemy(enemyType: EnemyType.noisePolluter,
+            if (enemyNam == "Deforester") {
+                          add(Enemy(enemyType: EnemyType.deforester,
               position: Vector2(spawnPoint.x, spawnPoint.y),
               size: Vector2(spawnPoint.width, spawnPoint.height),
               offNeg: 10,

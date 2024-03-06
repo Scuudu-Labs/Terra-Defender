@@ -45,7 +45,7 @@ class Enemy extends SpriteAnimationGroupComponent with HasGameRef<TerraDefender>
 
   int fireRate = 2500;
 
-  double enemyHealth = 0;
+  double enemyHealth = 1;
 
   bool isFiringEnemyBullet = false;
 
@@ -99,6 +99,8 @@ BulletType setBulletType(){
             return BulletType.noisePolluter;
         case EnemyType.towerDestroyer:
             return BulletType.towerDestroyer;
+        case EnemyType.deforester:
+            return BulletType.deforester;
         default:
             return BulletType.trasher;
     }
@@ -152,6 +154,9 @@ BulletType setBulletType(){
         break;
       case EnemyType.noisePolluter:
         enemyName = "Noisers";
+        break;
+      case EnemyType.deforester:
+        enemyName = "Deforester";
         break;
       default:
     }

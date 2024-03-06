@@ -21,6 +21,9 @@ class SolarBuilding extends SpriteAnimationComponent with HasGameRef<TerraDefend
 
     priority = 10;
 
+      game.towerCount ++;
+
+
 
     add(RectangleHitbox(
       position: Vector2(hitbox.offsetX, hitbox.offsetY),
@@ -54,11 +57,19 @@ class SolarBuilding extends SpriteAnimationComponent with HasGameRef<TerraDefend
     towerHealth --;
 
     if (towerHealth <= 0) {
+
+      game.towerCount --;
+      
       game.zaWarudoo.solarBuildings.remove(this);
+
+      if (game.towerCount <= 0) {
+        // game.loadLevelWithIndex(0);
+        game.showGameOverScreen();
+      }
+
       removeFromParent();
     }
     
   }
-
 
 }

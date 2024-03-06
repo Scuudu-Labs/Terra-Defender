@@ -3,7 +3,7 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "Level_01.tmx",
+    "activeFile": "Level_02.tmx",
     "expandedProjectPaths": [
         "."
     ],
@@ -15,8 +15,8 @@
             "scale": 1.341875,
             "selectedLayer": 2,
             "viewCenter": {
-                "x": 311.877037727061,
-                "y": 184.44340940847695
+                "x": 311.1318118304612,
+                "y": 183.69818351187706
             }
         },
         "C:/Users/Elvis Emezi/Documents/Unity/pixel_adventure/pixel_adventure/assets/tiles/Pixel Adventure.tsx": {
@@ -24,14 +24,14 @@
         },
         "Level_01.tmx": {
             "expandedObjectLayers": [
-                2,
-                3
+                3,
+                2
             ],
-            "scale": 0.5,
-            "selectedLayer": 1,
+            "scale": 0.75,
+            "selectedLayer": 2,
             "viewCenter": {
-                "x": 687,
-                "y": 555
+                "x": 875.3333333333334,
+                "y": 457.99999999999994
             }
         },
         "Level_02.tmx": {
@@ -39,10 +39,10 @@
                 2
             ],
             "scale": 0.5,
-            "selectedLayer": 1,
+            "selectedLayer": 2,
             "viewCenter": {
-                "x": 703,
-                "y": 449
+                "x": 859,
+                "y": 393
             }
         },
         "Terra Defender.tsx": {
@@ -50,6 +50,15 @@
         },
         "TerraMapTest.tsx": {
             "scaleInDock": 0.25
+        },
+        "sss.tsx": {
+            "dynamicWrapping": false,
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "zz.tsx": {
+            "scaleInDock": 0.5,
+            "scaleInEditor": 1
         }
     },
     "last.imagePath": "C:/Users/Elvis Emezi/Documents/Unity/terra_defender/terra_defender/assets/images/Terrain",
@@ -58,13 +67,16 @@
     "map.width": 40,
     "openFiles": [
         "Level_01.tmx",
-        "C:/Users/Elvis Emezi/Documents/Unity/pixel_adventure/pixel_adventure/assets/tiles/Level-02.tmx"
+        "Level_02.tmx"
     ],
     "project": "Terra Defender.tiled-project",
     "property.type": "float",
     "recentFiles": [
-        "C:/Users/Elvis Emezi/Documents/Unity/pixel_adventure/pixel_adventure/assets/tiles/Level-02.tmx",
-        "Level_01.tmx"
+        "Level_01.tmx",
+        "Level_02.tmx",
+        "sss.tsx",
+        "zz.tsx",
+        "C:/Users/Elvis Emezi/Documents/Unity/pixel_adventure/pixel_adventure/assets/tiles/Level-02.tmx"
     ],
     "tileset.lastUsedFormat": "tsx"
 }

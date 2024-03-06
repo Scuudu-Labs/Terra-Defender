@@ -25,7 +25,7 @@ class TerraDefender extends FlameGame
   late CameraComponent cam;
   late Levels zaWarudoo;
 
-  bool showControls = true;
+  bool showControls = false;
   bool levelCleared = false;
   bool soundOn = false;
   bool canUseJoystick = false;
@@ -34,6 +34,7 @@ class TerraDefender extends FlameGame
 
   late int trashCount = 0;
   late int enemyCount = 0;
+  late int towerCount = 0;
 
   Random random = Random();
 
@@ -59,7 +60,9 @@ class TerraDefender extends FlameGame
   void update(double dt) {
 
     if (showControls && canUseJoystick) {
+
       updateJoystick();
+      
     }
 
     super.update(dt);
@@ -90,7 +93,7 @@ class TerraDefender extends FlameGame
     cam.viewport.add(joystick);
     cam.viewport.add(shootButton);
 
-    Future.delayed(const Duration(milliseconds: 500), (){canUseJoystick = true;});
+    Future.delayed(const Duration(milliseconds: 800), (){canUseJoystick = true;});
   }
 
   void updateJoystick() {
@@ -160,6 +163,9 @@ double randomDoubleInRange(double min, double max) {
     else{
       //No more Levels
       currentLevelIndex = 0;
+
+      overlays.add('InDevelopment');
+      
       _loadLevel();
     }
   }
@@ -190,4 +196,76 @@ double randomDoubleInRange(double min, double max) {
     }
     });
   }
+
+  void loadLevelWithIndex(int levelToLoad){
+
+    currentLevelIndex = levelToLoad;
+
+    Future.delayed(const Duration(seconds: 1), (){
+      
+    // Levels zaWorld = Levels(levelName: levelNames[currentLevelIndex], player: player);
+    zaWarudoo = Levels(levelName: levelNames[currentLevelIndex], player: player);
+
+    //Camera that sees the worls here
+    cam = CameraComponent.withFixedResolution(
+        world: zaWarudoo, width: 1280, height: 704);
+
+    //Code for anchoring the cam to the left
+    cam.viewfinder.anchor = Anchor.topLeft;
+
+    //Adding the camera and the world
+    addAll([
+      cam,
+      zaWarudoo,
+    ]);
+
+    if (showControls) {
+      addMobileControls();
+
+      // debugMode = true;
+    }
+    });
+  }
+
+  void restartGame(){
+   
+    remove(zaWarudoo);
+    resumeGame();
+    currentLevelIndex = 0;
+    _loadLevel();
+                        
+    Future.delayed(const Duration(milliseconds: 1100), (){
+
+    overlays.remove('GameOver');
+
+    
+    // logger.d("Pressed, Play Again");
+
+    });
+
+
+
+  }
+
+  void showGameOverScreen(){
+
+    overlays.add('GameOver');
+    
+    pauseGame();
+  }
+
+  void pauseGame(){
+    paused = true;
+  }
+
+  void resumeGame(){
+    paused = false;
+  }
+
+  void startGame(){
+    overlays.remove('MainMenu');
+    zaWarudoo.spawnText("Pick Up the Trash");
+  }
+
+  void reset() {}
 }

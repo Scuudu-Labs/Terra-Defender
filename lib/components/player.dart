@@ -135,12 +135,17 @@ class Player extends SpriteAnimationGroupComponent with HasGameRef<TerraDefender
     // Clamp the player's x position to stay within the screen bounds
     // position.x = position.x.clamp(width, screenSize.x - width * 3.5);
     // position.x = position.x.clamp(width, game.size.x + width * 3.5);
-    position.x = position.x.clamp(width, 1280.00 - width);
+    double gameWidth = 1280.00;
+    double gameHeight = 704.00;
+    double citybuildingSpace = 128.00;
+    double treesSpace = 96.00;
+
+    position.x = position.x.clamp(width + citybuildingSpace, gameWidth - width - treesSpace);
 
     // Clamp the player's y position to stay within the screen bounds
     // position.y = position.y.clamp(0, screenSize.y - height * 2);
     // position.y = position.y.clamp(0, game.size.y + height * 2.25);
-    position.y = position.y.clamp(0, 704.00 - height);
+    position.y = position.y.clamp(0, gameHeight - height);
   
   }
 
@@ -274,8 +279,13 @@ class Player extends SpriteAnimationGroupComponent with HasGameRef<TerraDefender
           playerHealth --;
 
       if (playerHealth <= 0) {
+
+        game.showGameOverScreen();
+        
         removeFromParent();
+      
       }
+
         
       // game.logger.d("Player Is Hit");
 

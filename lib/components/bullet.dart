@@ -7,11 +7,11 @@ import 'package:terra_defender/components/solarBuilding.dart';
 import 'package:terra_defender/components/tree.dart';
 import 'package:terra_defender/terra_defender.dart';
 
-enum BulletType {player, towerDestroyer, trasher, airPolluter, noisePolluter}
+enum BulletType {player, towerDestroyer, deforester, trasher, airPolluter, noisePolluter}
 
 class Bullet extends SpriteAnimationComponent with HasGameRef<TerraDefender>, CollisionCallbacks{
 
-    Bullet({super.position, this.bulletType = BulletType.player, this.isShootingLeft = false, this.bulletMoveSpeed = 100 , this.timeBeforeDestroy = const Duration(seconds: 2)});
+    Bullet({super.position, super.size, this.bulletType = BulletType.player, this.isShootingLeft = false, this.bulletMoveSpeed = 100 , this.timeBeforeDestroy = const Duration(seconds: 2)});
 
     bool isShootingLeft = false;
     double bulletHorizontalMove = 0;
@@ -30,7 +30,7 @@ class Bullet extends SpriteAnimationComponent with HasGameRef<TerraDefender>, Co
     priority = 11;
     
     // size = Vector2.all(15);
-    size = Vector2.all(25);
+    // size = Vector2.all(25);
      add(CircleHitbox());
    setBulletSprite();
     
@@ -67,6 +67,12 @@ class Bullet extends SpriteAnimationComponent with HasGameRef<TerraDefender>, Co
     }
     if (other is Tree) {
       other.gotHit();
+
+      //Removes the bullet
+      removeFromParent();
+    }
+    if (other is Bullet) {
+      // other.gotHit();
 
       //Removes the bullet
       removeFromParent();
@@ -136,6 +142,16 @@ class Bullet extends SpriteAnimationComponent with HasGameRef<TerraDefender>, Co
         case BulletType.noisePolluter:
                  animation = await game.loadSpriteAnimation(
       'Enemies/Noisers/bullet.png',
+      SpriteAnimationData.sequenced(
+        stepTime: 0.05,
+        amount: 1,
+        textureSize: Vector2(986, 488),
+        ));
+        break;
+
+        case BulletType.deforester:
+                 animation = await game.loadSpriteAnimation(
+      'Enemies/Deforester/bullet.png',
       SpriteAnimationData.sequenced(
         stepTime: 0.05,
         amount: 1,
