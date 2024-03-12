@@ -32,7 +32,7 @@ class TerraDefender extends FlameGame
 
   // bool showControls = true;
   bool levelCleared = false;
-  bool canPlaySound = false;
+  bool canPlaySound = true;
   bool canUseJoystick = false; 
 
   // double soundVolume = 1.0;
@@ -77,8 +77,9 @@ class TerraDefender extends FlameGame
     //Load all images into the cache
     await images.loadAllImages();
 
-    if (canPlaySound) {FlameAudio.play("ThemeMusic.wav", volume: 0.5);}
+    // if (canPlaySound) {playSound("ThemeMusic3");}
 
+    FlameAudio.bgm.play("ThemeMusic3.5.wav");
 
      _loadLevel();
 
@@ -113,11 +114,6 @@ class TerraDefender extends FlameGame
     }
 
     super.update(dt);
-  }
-
-   void shakeScreen() {
-
-
   }
 
   void addMobileControls() {
@@ -194,6 +190,12 @@ class TerraDefender extends FlameGame
     }
   }
 
+  void playSound(String soundName){
+    
+    if(canPlaySound){FlameAudio.play("$soundName.wav", volume: soundVolume);}
+
+  }
+
   void toggleCameraShake(bool camShakeOn){ 
     if (camShakeOn) {
       _cameraShake.resume();
@@ -201,7 +203,12 @@ class TerraDefender extends FlameGame
     else{
       _cameraShake.pause();
     }
+}
 
+void screenShake(Duration duration){
+  toggleCameraShake(true);
+
+    Future.delayed(duration, (){toggleCameraShake(false);});
 }
   
   int randomNumberInRange(int min, int max) {
@@ -328,11 +335,14 @@ double randomDoubleInRange(double min, double max) {
   }
 
   void startGame(){
+    playSound("onPickup");
     overlays.remove('MainMenu');
     zaWarudoo.spawnText("Pick Up the Trash");
   }
 
-  void reset() {}
+  void reset(){
+    
+  }
 
 
 }

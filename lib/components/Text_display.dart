@@ -77,6 +77,7 @@ class Typewriter extends TextComponent with HasGameRef<TerraDefender> {
 
   Future<void> typeText(String newtext, Duration delay) async {
     for (int i = 0; i < newtext.length; i++) {
+      
       currentText += newtext[i];
 
       await Future.delayed(delay);

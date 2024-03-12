@@ -8,10 +8,10 @@ import 'package:terra_defender/terra_defender.dart';
 
 class SolarBuilding extends SpriteAnimationComponent with HasGameRef<TerraDefender>, CollisionCallbacks{
   final String buildingName;
-  SolarBuilding({this.buildingName = "SolarBuilding", position, size}) : super(position: position, size: size);
+  SolarBuilding({this.buildingName = "solarTower", position, size}) : super(position: position, size: size);
 
   final double stepTime = 0.08;
-  final hitbox = CustomHitbox(offsetX: 10, offsetY: 10, width: 12, height: 12);
+  final hitbox = CustomHitbox(offsetX: 10, offsetY: 10, width: 6, height: 12);
   bool collected = false;
 
   double towerHealth = 10;
@@ -28,7 +28,7 @@ class SolarBuilding extends SpriteAnimationComponent with HasGameRef<TerraDefend
 
     add(RectangleHitbox(
       position: Vector2(hitbox.offsetX, hitbox.offsetY),
-      size: size,
+      size: size / 2,
       collisionType: CollisionType.passive,
     ));
 
@@ -41,6 +41,8 @@ class SolarBuilding extends SpriteAnimationComponent with HasGameRef<TerraDefend
   void collidedWithPlayer() async {
     if (!collected) {
       collected = true;
+
+      game.screenShake(const Duration(milliseconds: 350));
 
     //   game.trashCount --;
     //   // if(game.playSounds){FlameAudio.play("collect_fruit.wav", volume: game.soundVolume);}
@@ -56,6 +58,8 @@ class SolarBuilding extends SpriteAnimationComponent with HasGameRef<TerraDefend
   void gotHit(){
     // game.logger.d("Building Hit");
     if(game.canPlaySound){FlameAudio.play("attackeeHit.wav", volume: game.soundVolume);}
+
+    game.screenShake(const Duration(milliseconds: 400));
     
     towerHealth --;
 

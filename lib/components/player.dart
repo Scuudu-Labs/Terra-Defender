@@ -279,11 +279,9 @@ class Player extends SpriteAnimationGroupComponent with HasGameRef<TerraDefender
 
     
 
-    if (game.canPlaySound) {FlameAudio.play("isHit.wav", volume: game.soundVolume);}
+    if (game.canPlaySound) {game.playSound("isHit");}
 
-    game.toggleCameraShake(true);
-
-    Future.delayed(const Duration(milliseconds: 300), (){  game.toggleCameraShake(false);});
+    game.screenShake(const Duration(milliseconds: 300));
 
           playerHealth --;
 

@@ -64,7 +64,7 @@ class Trash extends SpriteAnimationComponent with HasGameRef<TerraDefender>, Col
     if (!collected) {
       collected = true;
 
-    if (game.canPlaySound) {FlameAudio.play("onPickup.wav", volume: game.soundVolume);}
+    if (game.canPlaySound) {game.playSound("onPickup");}
 
       game.trashCount --;
       // if(game.playSounds){FlameAudio.play("collect_fruit.wav", volume: game.soundVolume);}

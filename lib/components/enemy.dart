@@ -327,7 +327,7 @@ BulletType setBulletType(){
 
   void gotHit(){
 
-    if(game.canPlaySound){FlameAudio.play("attackeeHit.wav", volume: game.soundVolume);}
+    if(game.canPlaySound){game.playSound("enemyIsHit");}
     
     enemyHealth --;
   

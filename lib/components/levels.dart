@@ -29,7 +29,7 @@ class Levels extends World with HasGameRef<TerraDefender>, KeyboardHandler {
 
   //Milliseconds between bullet shots
   double fireRate = 300;
-  int shootDelay = 500;
+  int shootDelay = 300;
 
   //Storing the collision blocks
   List<CollissionBlock> collissionBlocks = [];
@@ -53,7 +53,7 @@ class Levels extends World with HasGameRef<TerraDefender>, KeyboardHandler {
       "$levelName.tmx",
       Vector2.all(32),
     );
-    // debugMode = true;
+    debugMode = true;
 
     
 

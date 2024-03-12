@@ -10,8 +10,8 @@ class ShootButton extends SpriteComponent with HasGameRef<TerraDefender>, TapCal
   final double buttonSize = 200; // Adjusted button size
   final paddingX = 50; // Added padding
   final paddingY = 0; // Added padding
-      double gameWidth = 1280.00;
-    double gameHeight = 704.00;
+  double gameWidth = 1280.00;
+  double gameHeight = 704.00;
 
   @override
   FutureOr<void> onLoad() {
@@ -31,7 +31,16 @@ class ShootButton extends SpriteComponent with HasGameRef<TerraDefender>, TapCal
   @override
   void onTapDown(TapDownEvent event) {
     // game.player.hasJumped = true;
-    game.zaWarudoo.fireBullet(game.player, const Duration(seconds: 3), BulletType.player);
+    // game.zaWarudoo.fireBullet(game.player, const Duration(seconds: 3), BulletType.player);
+
+          if (!game.zaWarudoo.isFiringBullet) {
+        game.zaWarudoo.isFiringBullet = true;
+        
+      game.zaWarudoo.fireBullet(game.player, const Duration(seconds: 3), BulletType.player);
+
+      Future.delayed(Duration(milliseconds: game.zaWarudoo.shootDelay), (){game.zaWarudoo.isFiringBullet = false;});
+          
+      }
     super.onTapDown(event);
   }
 

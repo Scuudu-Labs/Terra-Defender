@@ -36,6 +36,8 @@ class Tree extends SpriteAnimationComponent with HasGameRef<TerraDefender>, Coll
 
   void gotHit(){
     // game.logger.d("Tree Hit");
+    if(game.canPlaySound){game.playSound("attackeeHit");}
+
     treeHealth --;
 
     if (treeHealth <= 0) {

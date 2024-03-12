@@ -116,7 +116,7 @@ class Bullet extends SpriteAnimationComponent with HasGameRef<TerraDefender>, Co
       ),
     );
 
-    if (game.canPlaySound) {FlameAudio.play("shoot2.wav", volume: game.soundVolume);}
+    if (game.canPlaySound) {game.playSound("shoot");}
         break;
 
         case BulletType.trasher:
@@ -127,6 +127,8 @@ class Bullet extends SpriteAnimationComponent with HasGameRef<TerraDefender>, Co
         amount: 1,
         textureSize: Vector2(986, 488),
         ));
+
+    if (game.canPlaySound) {game.playSound("shoot");}
         break;
 
         case BulletType.towerDestroyer:
@@ -137,6 +139,7 @@ class Bullet extends SpriteAnimationComponent with HasGameRef<TerraDefender>, Co
         amount: 1,
         textureSize: Vector2(986, 488),
         ));
+    if (game.canPlaySound) {game.playSound("shoot");}
         break;
 
         case BulletType.airPolluter:
@@ -147,6 +150,7 @@ class Bullet extends SpriteAnimationComponent with HasGameRef<TerraDefender>, Co
         amount: 1,
         textureSize: Vector2(986, 488),
         ));
+    if (game.canPlaySound) {game.playSound("shoot");}
         break;
 
         case BulletType.noisePolluter:
@@ -157,6 +161,7 @@ class Bullet extends SpriteAnimationComponent with HasGameRef<TerraDefender>, Co
         amount: 1,
         textureSize: Vector2(986, 488),
         ));
+    if (game.canPlaySound) {game.playSound("shoot");}
         break;
 
         case BulletType.deforester:
@@ -167,6 +172,7 @@ class Bullet extends SpriteAnimationComponent with HasGameRef<TerraDefender>, Co
         amount: 1,
         textureSize: Vector2(986, 488),
         ));
+    if (game.canPlaySound) {game.playSound("shoot");}
         break;
 
       default:

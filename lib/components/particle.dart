@@ -19,7 +19,8 @@ class Particle extends SpriteAnimationComponent with HasGameRef<TerraDefender>, 
 
     priority = 12;
 
-    if(game.canPlaySound){FlameAudio.play("flame.wav", volume: game.soundVolume);}
+
+    if(game.canPlaySound){game.playSound("flame");}
 
     animation = SpriteAnimation.fromFrameData(game.images.fromCache("Enemies/Deforester/$name.png"), SpriteAnimationData.sequenced(amount: 4, stepTime: stepTime, textureSize: Vector2.all(96)));
     
