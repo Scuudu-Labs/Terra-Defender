@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:math';
 import 'package:flame/components.dart';
+import 'package:flame/effects.dart';
 import 'package:flame/events.dart';
 import 'package:flame/game.dart';
 import 'package:flame_audio/flame_audio.dart';
@@ -11,6 +12,7 @@ import 'package:logger/logger.dart';
 import 'package:terra_defender/components/levels.dart';
 import 'package:terra_defender/components/player.dart';
 import 'package:terra_defender/components/shoot_button.dart';
+import 'package:flame_noise/flame_noise.dart';
 
 class TerraDefender extends FlameGame
     with
@@ -31,7 +33,7 @@ class TerraDefender extends FlameGame
   // bool showControls = true;
   bool levelCleared = false;
   bool canPlaySound = false;
-  bool canUseJoystick = false;
+  bool canUseJoystick = false; 
 
   // double soundVolume = 1.0;
   double soundVolume = 0.2;
@@ -40,14 +42,22 @@ class TerraDefender extends FlameGame
   late int enemyCount = 0;
   late int towerCount = 0;
 
+  late Vector2 originalPosition;
+  double shakeTimer = 0.0;
+  double shakeIntensity = 5.0;
+
+  late final _cameraShake = MoveEffect.by(Vector2(3, 3), InfiniteEffectController(ZigzagEffectController(period: 0.2)));
+
   Random random = Random();
 
   List<String> levelNames = ["Level_01", "Level_02"];
   int currentLevelIndex = 0;
 
   //Sets the background color to match
-  @override
-  Color backgroundColor() => const Color.fromARGB(255, 22, 36, 231);
+  // @override
+  // Color backgroundColor() => const Color.fromARGB(255, 22, 36, 231); GameBackground.png
+
+
 
   bool get showControls {
   // If it's web, return false
@@ -67,10 +77,27 @@ class TerraDefender extends FlameGame
     //Load all images into the cache
     await images.loadAllImages();
 
-    if (canPlaySound) {FlameAudio.play("ThemeMusic.wav", volume: 0.3);}
+    if (canPlaySound) {FlameAudio.play("ThemeMusic.wav", volume: 0.5);}
 
 
      _loadLevel();
+
+     // Assuming the image is already loaded into the cache
+    final backgroundImage = images.fromCache('Background/GameBackground.png');
+    
+    // Create a SpriteComponent using the cached image
+    final background = SpriteComponent()
+      ..sprite = Sprite(backgroundImage)
+      ..size = size; // Set the size of the background to match the game size
+    
+    // Add the background component to the game
+    add(background);
+
+    
+
+    // Future.delayed(const Duration(seconds: 5), (){_cameraShake.pause();});
+
+    
 
 
     return super.onLoad();
@@ -86,6 +113,11 @@ class TerraDefender extends FlameGame
     }
 
     super.update(dt);
+  }
+
+   void shakeScreen() {
+
+
   }
 
   void addMobileControls() {
@@ -162,6 +194,15 @@ class TerraDefender extends FlameGame
     }
   }
 
+  void toggleCameraShake(bool camShakeOn){ 
+    if (camShakeOn) {
+      _cameraShake.resume();
+    }
+    else{
+      _cameraShake.pause();
+    }
+
+}
   
   int randomNumberInRange(int min, int max) {
   return min + random.nextInt(max - min);
@@ -190,7 +231,7 @@ double randomDoubleInRange(double min, double max) {
     }
   }
 
-  void _loadLevel(){
+  void _loadLevel() async {
     Future.delayed(const Duration(seconds: 1), (){
       
     // Levels zaWorld = Levels(levelName: levelNames[currentLevelIndex], player: player);
@@ -202,6 +243,10 @@ double randomDoubleInRange(double min, double max) {
 
     //Code for anchoring the cam to the left
     cam.viewfinder.anchor = Anchor.topLeft;
+
+    cam.viewfinder.add(_cameraShake);
+
+    _cameraShake.pause();
 
     //Adding the camera and the world
     addAll([
@@ -288,4 +333,6 @@ double randomDoubleInRange(double min, double max) {
   }
 
   void reset() {}
+
+
 }

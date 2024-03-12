@@ -70,6 +70,8 @@ class SolarBuilding extends SpriteAnimationComponent with HasGameRef<TerraDefend
         game.showGameOverScreen();
       }
 
+      game.zaWarudoo.spawnParticle(center, Vector2.all(64));
+
       removeFromParent();
     }
     

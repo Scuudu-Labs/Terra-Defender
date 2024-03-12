@@ -24,14 +24,14 @@
         },
         "Level_01.tmx": {
             "expandedObjectLayers": [
-                3,
-                2
+                2,
+                3
             ],
-            "scale": 0.5,
+            "scale": 0.75,
             "selectedLayer": 2,
             "viewCenter": {
-                "x": 725,
-                "y": 425
+                "x": 599.3333333333333,
+                "y": 411.33333333333326
             }
         },
         "Level_02.tmx": {
@@ -41,8 +41,8 @@
             "scale": 0.5,
             "selectedLayer": 2,
             "viewCenter": {
-                "x": 633,
-                "y": 481
+                "x": 631,
+                "y": 479
             }
         },
         "Terra Defender.tsx": {

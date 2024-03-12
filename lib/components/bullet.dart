@@ -53,35 +53,36 @@ class Bullet extends SpriteAnimationComponent with HasGameRef<TerraDefender>, Co
       other.gotHit();
 
       //Removes the bullet
-      game.zaWarudoo.spawnParticle(position, Vector2.all(64));
+      game.zaWarudoo.spawnParticle(other.center, Vector2.all(64));
       removeFromParent();
     }
     if (other is Player) {
       other.gotHit();
 
       //Removes the bullet
-      game.zaWarudoo.spawnParticle(position, Vector2.all(64));
+      game.zaWarudoo.spawnParticle(other.center, Vector2.all(64));
       removeFromParent();
     }
     if (other is SolarBuilding) {
       other.gotHit();
 
       //Removes the bullet
-      game.zaWarudoo.spawnParticle(position, Vector2.all(64));
+      game.zaWarudoo.spawnParticle(other.center, Vector2.all(64));
+      // game.logger.d(other.size);
       removeFromParent();
     }
     if (other is Tree) {
       other.gotHit();
 
       //Removes the bullet
-      game.zaWarudoo.spawnParticle(position, Vector2.all(64));
+      game.zaWarudoo.spawnParticle(other.center, Vector2.all(64));
       removeFromParent();
     }
     if (other is Bullet) {
       // other.gotHit();
 
       //Removes the bullet
-      game.zaWarudoo.spawnParticle(position, Vector2.all(64));
+      game.zaWarudoo.spawnParticle(other.center, Vector2.all(64));
       removeFromParent();
     }
     super.onCollision(intersectionPoints, other);
@@ -115,7 +116,7 @@ class Bullet extends SpriteAnimationComponent with HasGameRef<TerraDefender>, Co
       ),
     );
 
-    if (game.canPlaySound) {FlameAudio.play("shoot.wav", volume: game.soundVolume);}
+    if (game.canPlaySound) {FlameAudio.play("shoot2.wav", volume: game.soundVolume);}
         break;
 
         case BulletType.trasher:
