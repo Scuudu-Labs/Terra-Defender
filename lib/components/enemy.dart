@@ -3,6 +3,7 @@ import 'dart:ui';
 
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
+import 'package:flame_audio/flame_audio.dart';
 import 'package:terra_defender/components/bullet.dart';
 import 'package:terra_defender/components/player.dart';
 import 'package:terra_defender/components/solarBuilding.dart';
@@ -45,7 +46,7 @@ class Enemy extends SpriteAnimationGroupComponent with HasGameRef<TerraDefender>
 
   int fireRate = 2500;
 
-  double enemyHealth = 1;
+  double enemyHealth = 3;
 
   bool isFiringEnemyBullet = false;
 
@@ -325,6 +326,9 @@ BulletType setBulletType(){
 
 
   void gotHit(){
+
+    if(game.canPlaySound){FlameAudio.play("attackeeHit.wav", volume: game.soundVolume);}
+    
     enemyHealth --;
   
     if (enemyHealth <= 0 && !isDead) {
@@ -348,11 +352,11 @@ BulletType setBulletType(){
   void setEnemyHealth() {
     switch (enemyType) {
       case EnemyType.towerDestroyer:
-        enemyHealth = 1;
+        enemyHealth = 3;
         break;
 
       case EnemyType.noisePolluter:
-      enemyHealth = 2;
+      enemyHealth = 3;
       break;
       default:
     }

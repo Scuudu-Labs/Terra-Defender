@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flame/game.dart';
 import 'package:terra_defender/terra_defender.dart';
 
 class MainMenu extends StatelessWidget {

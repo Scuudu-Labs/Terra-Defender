@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
+import 'package:flame_audio/flame_audio.dart';
 import 'package:terra_defender/components/custom_hitbox.dart';
 import 'package:terra_defender/terra_defender.dart';
 
@@ -54,6 +55,8 @@ class SolarBuilding extends SpriteAnimationComponent with HasGameRef<TerraDefend
 
   void gotHit(){
     // game.logger.d("Building Hit");
+    if(game.canPlaySound){FlameAudio.play("attackeeHit.wav", volume: game.soundVolume);}
+    
     towerHealth --;
 
     if (towerHealth <= 0) {

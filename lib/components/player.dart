@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
+import 'package:flame_audio/flame_audio.dart';
 import 'package:flutter/src/services/raw_keyboard.dart';
 import 'package:terra_defender/components/collision_block.dart';
 import 'package:terra_defender/components/custom_hitbox.dart';
@@ -26,8 +27,8 @@ class Player extends SpriteAnimationGroupComponent with HasGameRef<TerraDefender
 
   double horizontalMovement = 0;
   double verticalMovement = 0;
-  // double moveSpeed = 100;
-  double moveSpeed = 500;
+  double moveSpeed = 100;
+  // double moveSpeed = 500;
   double playerHealth = 50;
 
   Vector2 velocity = Vector2.zero();
@@ -275,6 +276,10 @@ class Player extends SpriteAnimationGroupComponent with HasGameRef<TerraDefender
   void colliderWithEnemy() {}
 
   void gotHit() {
+
+    
+
+    if (game.canPlaySound) {FlameAudio.play("isHit.wav", volume: game.soundVolume);}
 
           playerHealth --;
 

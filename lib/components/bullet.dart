@@ -1,7 +1,9 @@
 import 'dart:async';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
+import 'package:flame_audio/flame_audio.dart';
 import 'package:terra_defender/components/enemy.dart';
+import 'package:terra_defender/components/particle.dart';
 import 'package:terra_defender/components/player.dart';
 import 'package:terra_defender/components/solarBuilding.dart';
 import 'package:terra_defender/components/tree.dart';
@@ -51,30 +53,35 @@ class Bullet extends SpriteAnimationComponent with HasGameRef<TerraDefender>, Co
       other.gotHit();
 
       //Removes the bullet
+      game.zaWarudoo.spawnParticle(position, Vector2.all(64));
       removeFromParent();
     }
     if (other is Player) {
       other.gotHit();
 
       //Removes the bullet
+      game.zaWarudoo.spawnParticle(position, Vector2.all(64));
       removeFromParent();
     }
     if (other is SolarBuilding) {
       other.gotHit();
 
       //Removes the bullet
+      game.zaWarudoo.spawnParticle(position, Vector2.all(64));
       removeFromParent();
     }
     if (other is Tree) {
       other.gotHit();
 
       //Removes the bullet
+      game.zaWarudoo.spawnParticle(position, Vector2.all(64));
       removeFromParent();
     }
     if (other is Bullet) {
       // other.gotHit();
 
       //Removes the bullet
+      game.zaWarudoo.spawnParticle(position, Vector2.all(64));
       removeFromParent();
     }
     super.onCollision(intersectionPoints, other);
@@ -107,6 +114,8 @@ class Bullet extends SpriteAnimationComponent with HasGameRef<TerraDefender>, Co
         textureSize: Vector2(2388, 1010),
       ),
     );
+
+    if (game.canPlaySound) {FlameAudio.play("shoot.wav", volume: game.soundVolume);}
         break;
 
         case BulletType.trasher:

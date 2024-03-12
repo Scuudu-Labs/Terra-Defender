@@ -1,9 +1,12 @@
 import 'dart:async';
+import 'dart:io';
 import 'dart:math';
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flame/game.dart';
+import 'package:flame_audio/flame_audio.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:logger/logger.dart';
 import 'package:terra_defender/components/levels.dart';
 import 'package:terra_defender/components/player.dart';
@@ -25,12 +28,13 @@ class TerraDefender extends FlameGame
   late CameraComponent cam;
   late Levels zaWarudoo;
 
-  bool showControls = false;
+  // bool showControls = true;
   bool levelCleared = false;
-  bool soundOn = false;
+  bool canPlaySound = false;
   bool canUseJoystick = false;
 
-  double soundVolume = 1.0;
+  // double soundVolume = 1.0;
+  double soundVolume = 0.2;
 
   late int trashCount = 0;
   late int enemyCount = 0;
@@ -45,10 +49,26 @@ class TerraDefender extends FlameGame
   @override
   Color backgroundColor() => const Color.fromARGB(255, 22, 36, 231);
 
+  bool get showControls {
+  // If it's web, return false
+  if (kIsWeb) {
+    return false;
+  } else {
+    // If it's Android or iOS, return true, otherwise false
+
+    bool isMobileDevice = Platform.isAndroid || Platform.isIOS;
+    // logger.d("is mobile Device: $isMobileDevice");
+    return isMobileDevice;
+  }
+}
+
   @override
   FutureOr<void> onLoad() async {
     //Load all images into the cache
     await images.loadAllImages();
+
+    if (canPlaySound) {FlameAudio.play("ThemeMusic.wav", volume: 0.3);}
+
 
      _loadLevel();
 

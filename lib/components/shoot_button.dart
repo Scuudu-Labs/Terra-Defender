@@ -7,38 +7,37 @@ import 'package:terra_defender/terra_defender.dart';
 class ShootButton extends SpriteComponent with HasGameRef<TerraDefender>, TapCallbacks{
   ShootButton();
   final margin = 32;
-  final buttonSize = 64;
-
+  final double buttonSize = 200; // Adjusted button size
+  final paddingX = 50; // Added padding
+  final paddingY = 0; // Added padding
+      double gameWidth = 1280.00;
+    double gameHeight = 704.00;
 
   @override
   FutureOr<void> onLoad() {
     // debugMode = true;
     sprite = Sprite(game.images.fromCache("HUD/ShootButton.png"));
-    size = Vector2.all(106);
-    position = Vector2(1150, 570);
-    // position = Vector2(
-    //   game.size.x - margin - buttonSize, 
-    //   game.size.y -margin -buttonSize,
-    // );
-
+    size = Vector2.all(buttonSize);
+    position = Vector2(
+      gameWidth - margin - buttonSize - paddingX, // Adjusted position for bottom right
+      gameHeight - margin - buttonSize - paddingY,
+    );
 
     priority = 10;
 
     return super.onLoad();
   }
 
-@override
+  @override
   void onTapDown(TapDownEvent event) {
     // game.player.hasJumped = true;
     game.zaWarudoo.fireBullet(game.player, const Duration(seconds: 3), BulletType.player);
     super.onTapDown(event);
   }
 
-@override
+  @override
   void onTapUp(TapUpEvent event) {
     // game.player.hasJumped = false;
     super.onTapUp(event);
   }
-
-
 }

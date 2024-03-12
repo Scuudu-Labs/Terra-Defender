@@ -1,6 +1,5 @@
 import 'package:flame/flame.dart';
 import 'package:flame/game.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:terra_defender/components/game_over.dart';
 import 'package:terra_defender/components/in_development.dart';
@@ -16,7 +15,7 @@ void main() async {
 
 
 
- TerraDefender game = TerraDefender();
+//  TerraDefender game = TerraDefender();
 
   //  runApp(GameWidget(game: kDebugMode ? TerraDefender() : game));
 
@@ -30,7 +29,7 @@ void main() async {
   //     initialActiveOverlays: const ['MainMenu'],
   //   ),
   // );
-
+    
     runApp(
     GameWidget<TerraDefender>.controlled(
       gameFactory: TerraDefender.new,
@@ -42,6 +41,8 @@ void main() async {
       initialActiveOverlays: const ['MainMenu'],
     ),
   );
+
+
 }
 
 

@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
+import 'package:flame_audio/flame_audio.dart';
 import 'package:terra_defender/components/custom_hitbox.dart';
 import 'package:terra_defender/terra_defender.dart';
 
@@ -62,6 +63,8 @@ class Trash extends SpriteAnimationComponent with HasGameRef<TerraDefender>, Col
   void collidedWithPlayer() async {
     if (!collected) {
       collected = true;
+
+    if (game.canPlaySound) {FlameAudio.play("onPickup.wav", volume: game.soundVolume);}
 
       game.trashCount --;
       // if(game.playSounds){FlameAudio.play("collect_fruit.wav", volume: game.soundVolume);}

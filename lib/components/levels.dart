@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flame/components.dart';
+import 'package:flame_audio/flame_audio.dart';
 import 'package:flame_tiled/flame_tiled.dart';
 // ignore: implementation_imports
 import 'package:flutter/src/services/raw_keyboard.dart';
@@ -8,6 +9,7 @@ import 'package:terra_defender/components/Text_display.dart';
 import 'package:terra_defender/components/bullet.dart';
 import 'package:terra_defender/components/collision_block.dart';
 import 'package:terra_defender/components/enemy.dart';
+import 'package:terra_defender/components/particle.dart';
 import 'package:terra_defender/components/player.dart';
 import 'package:terra_defender/components/solarBuilding.dart';
 import 'package:terra_defender/components/trash.dart';
@@ -27,6 +29,7 @@ class Levels extends World with HasGameRef<TerraDefender>, KeyboardHandler {
 
   //Milliseconds between bullet shots
   double fireRate = 300;
+  int shootDelay = 500;
 
   //Storing the collision blocks
   List<CollissionBlock> collissionBlocks = [];
@@ -52,6 +55,8 @@ class Levels extends World with HasGameRef<TerraDefender>, KeyboardHandler {
     );
     // debugMode = true;
 
+    
+
     add(level);
 
     _spawnObjects();
@@ -62,21 +67,33 @@ class Levels extends World with HasGameRef<TerraDefender>, KeyboardHandler {
     //Sets the collission blocks from the level file in the collission block List on the player file
     player.collissionBlocks = collissionBlocks;
 
+
     return super.onLoad();
   }
 
-  @override
-  void update(double dt) {
 
-
-    super.update(dt);
-  }
 
   @override
   bool onKeyEvent(RawKeyEvent event, Set<LogicalKeyboardKey> keysPressed) {
     
     if (keysPressed.contains(LogicalKeyboardKey.keyF)) {
+
+
+      if (!isFiringBullet) {
+        isFiringBullet = true;
+        
       fireBullet(player, const Duration(seconds: 3), BulletType.player);
+
+      Future.delayed(Duration(milliseconds: shootDelay), (){isFiringBullet = false;});
+
+      }
+
+
+      
+
+
+    
+    
     } 
 
     return super.onKeyEvent(event, keysPressed);
@@ -112,6 +129,14 @@ class Levels extends World with HasGameRef<TerraDefender>, KeyboardHandler {
     add(bullet);
   }
 
+  void spawnParticle(Vector2 pos, Vector siz){
+    
+            add(Particle(
+              position: pos,
+              size: siz,
+            ));
+  }
+
   void spawnEnemyDrop(PositionComponent dropper){
     add(Trash(
       position: dropper.position,
@@ -137,6 +162,7 @@ class Levels extends World with HasGameRef<TerraDefender>, KeyboardHandler {
             player.scale.x = 1;
 
             add(player);
+
 
             break;
           case "Enemy":
@@ -256,7 +282,7 @@ class Levels extends World with HasGameRef<TerraDefender>, KeyboardHandler {
   void protectTowerPrompt(){
 
             add(Typewriter(
-              textToType: "Protect the Solar Tower",
+              textToType: game.towerCount > 1 ? "Protect the Solar Tower" : "Protect the Solar Towers",
               // position: Vector2(player.position.x, player.position.y + (player.size.y * 2)),
               position: Vector2(game.size.x / 2, game.size.y / 15),
               typingSpeed: const Duration(milliseconds: 70),

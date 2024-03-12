@@ -3,7 +3,7 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "Level_02.tmx",
+    "activeFile": "Level_01.tmx",
     "expandedProjectPaths": [
         "."
     ],
@@ -27,11 +27,11 @@
                 3,
                 2
             ],
-            "scale": 0.75,
+            "scale": 0.5,
             "selectedLayer": 2,
             "viewCenter": {
-                "x": 875.3333333333334,
-                "y": 457.99999999999994
+                "x": 725,
+                "y": 425
             }
         },
         "Level_02.tmx": {
@@ -41,8 +41,8 @@
             "scale": 0.5,
             "selectedLayer": 2,
             "viewCenter": {
-                "x": 859,
-                "y": 393
+                "x": 633,
+                "y": 481
             }
         },
         "Terra Defender.tsx": {
@@ -72,8 +72,8 @@
     "project": "Terra Defender.tiled-project",
     "property.type": "float",
     "recentFiles": [
-        "Level_01.tmx",
         "Level_02.tmx",
+        "Level_01.tmx",
         "sss.tsx",
         "zz.tsx",
         "C:/Users/Elvis Emezi/Documents/Unity/pixel_adventure/pixel_adventure/assets/tiles/Level-02.tmx"
