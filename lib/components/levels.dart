@@ -53,7 +53,7 @@ class Levels extends World with HasGameRef<TerraDefender>, KeyboardHandler {
       "$levelName.tmx",
       Vector2.all(32),
     );
-    debugMode = true;
+    // debugMode = true;
 
     
 
@@ -182,8 +182,32 @@ class Levels extends World with HasGameRef<TerraDefender>, KeyboardHandler {
             ));
             }
           }
+          if(game.currentLevelIndex > 0){
+           late String enemyNam = spawnPoint.name;
 
-            // add(Enemy(enemyType: EnemyType.noisePolluters,
+            if (enemyNam == "Noisers") {
+                          add(Enemy(enemyType: EnemyType.noisePolluter,
+              position: Vector2(spawnPoint.x, spawnPoint.y),
+              size: Vector2(spawnPoint.width, spawnPoint.height),
+              offNeg: 10,
+              offPos: 10,
+            ));
+            }
+          }
+          if(game.currentLevelIndex > 0){
+           late String enemyNam = spawnPoint.name;
+
+            if (enemyNam == "AirPolluter") {
+                          add(Enemy(enemyType: EnemyType.airPolluter,
+              position: Vector2(spawnPoint.x, spawnPoint.y),
+              size: Vector2(spawnPoint.width, spawnPoint.height),
+              offNeg: 10,
+              offPos: 10,
+            ));
+            }
+          }
+
+            // add(Enemy(enemyType: EnemyType.noisePolluters, AirPolluter
             //   position: Vector2(spawnPoint.x, spawnPoint.y),
             //   size: Vector2(spawnPoint.width, spawnPoint.height),
             //   offNeg: 10,
@@ -234,7 +258,7 @@ class Levels extends World with HasGameRef<TerraDefender>, KeyboardHandler {
             add(Typewriter(
               textToType: "Pick Up the Trash",
               // position: Vector2(spawnPoint.x, spawnPoint.y),
-              position: Vector2(game.size.x / 2, game.size.y / 15),
+              position: Vector2(game.size.x / 2, game.size.y / 10),
               typingSpeed: const Duration(milliseconds: 70),
               destroyOnTypeCompleted: true,
               destroyAfterDuration: const Duration(seconds: 6),
@@ -284,7 +308,7 @@ class Levels extends World with HasGameRef<TerraDefender>, KeyboardHandler {
             add(Typewriter(
               textToType: game.towerCount > 1 ? "Protect the Solar Tower" : "Protect the Solar Towers",
               // position: Vector2(player.position.x, player.position.y + (player.size.y * 2)),
-              position: Vector2(game.size.x / 2, game.size.y / 15),
+              position: Vector2(game.size.x / 2, game.size.y / 10),
               typingSpeed: const Duration(milliseconds: 70),
               destroyOnTypeCompleted: true,
               destroyAfterDuration: const Duration(seconds: 3),
@@ -329,7 +353,7 @@ class Levels extends World with HasGameRef<TerraDefender>, KeyboardHandler {
     }
     else{
       spawnText("Level Cleared!!!");
-
+      
       Future.delayed(const Duration(seconds: 3), (){game.loadNextLevel();});
     }
 
@@ -360,7 +384,7 @@ class Levels extends World with HasGameRef<TerraDefender>, KeyboardHandler {
                 add(Typewriter(
               textToType: "Collect Dropped Resources",
               // position: Vector2(player.position.x, player.position.y + (player.size.y * 2)),
-              position: Vector2(game.size.x / 2, game.size.y / 15),
+              position: Vector2(game.size.x / 2, game.size.y / 10),
               typingSpeed: const Duration(milliseconds: 70),
               destroyOnTypeCompleted: true,
               destroyAfterDuration: const Duration(seconds: 3),

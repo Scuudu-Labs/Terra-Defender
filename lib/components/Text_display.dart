@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:terra_defender/terra_defender.dart';
 
 class Typewriter extends TextComponent with HasGameRef<TerraDefender> {
@@ -12,17 +13,25 @@ class Typewriter extends TextComponent with HasGameRef<TerraDefender> {
   late String currentText = "";
   bool destroyOnTypeCompleted;
 
-  Typewriter(
-      {this.textToType = "Alphabetical",
-      position,
-      this.typingSpeed = const Duration(milliseconds: 100),
-      this.destroyAfterDuration = const Duration(seconds: 2),
-      this.destroyOnTypeCompleted = false,})
-      : super(
+  Typewriter({
+    this.textToType = "Alphabetical",
+    position,
+    this.typingSpeed = const Duration(milliseconds: 100),
+    this.destroyAfterDuration = const Duration(seconds: 2),
+    this.destroyOnTypeCompleted = false,
+  }) : super(
           text: "Muahahahahahaha",
           textRenderer: TextPaint(
-              style: const TextStyle(
-                  fontSize: 48.0, color: Color.fromARGB(255, 251, 0, 184))),
+            style: GoogleFonts.comicNeue(
+              textStyle: TextStyle(
+                fontSize: 28,
+                foreground: Paint()
+                  ..style = PaintingStyle.stroke
+                  ..strokeWidth = 2
+                  ..color = Color.fromARGB(255, 181, 88, 42), // Dark brown color
+              ),
+            ),
+          ),
           position: position, // Position where the countdown will be displayed.
           anchor: Anchor.center,
         );
@@ -36,33 +45,40 @@ class Typewriter extends TextComponent with HasGameRef<TerraDefender> {
     super.update(dt);
   }
 
-  @override
-  void render(Canvas canvas) {
+@override
+void render(Canvas canvas) async {
   // Define the dimensions of the dialog
-  final rect = Rect.fromLTWH(-15, -15, size.x + 30, size.y + 35);
-  
-  // Define the paint for the background (black)
-  final backgroundPaint = Paint()..color = Colors.brown;
-  
-  // Define the paint for the outline (brown)
-  final outlinePaint = Paint()..color = Colors.brown;
-  
+  final rect = Rect.fromLTWH(-15, -15, size.x + 50, size.y + 55);
+
+  // Define the paint for the background (green)
+  final backgroundPaint = Paint()..color = Color.fromARGB(0, 210, 229, 227); // Soft green color
+
   // Define the paint for the blue center
-  final bluePaint = Paint()..color = Colors.blue;
-  
+  final bluePaint = Paint()..color = Color(0xFF82AEC7); // Soft blue center color
+
   // Draw the background
   canvas.drawRect(rect, backgroundPaint);
-  
+
   // Calculate dimensions for the inner rectangle (blue center)
-  final innerRect = Rect.fromLTWH(rect.left + 10, rect.top + 10, rect.width - 20, rect.height - 20);
-  
-  // Draw the outline (brown)
-  canvas.drawRect(innerRect, outlinePaint);
-  
+  final innerRect =
+      Rect.fromLTWH(rect.left + 10, rect.top + 10, rect.width - 20, rect.height - 20);
+
   // Draw the blue center
   canvas.drawRect(innerRect, bluePaint);
-    super.render(canvas);
-  }
+
+  // Load your image from cache
+  final image = game.images.fromCache("Background/textBackground.png");
+
+  // Draw the image over the inner rectangle
+  canvas.drawImageRect(
+      image,
+      Rect.fromLTWH(0, 0, image.width.toDouble(), image.height.toDouble()),
+      innerRect,
+      Paint());
+
+  super.render(canvas);
+}
+
 
   @override
   FutureOr<void> onLoad() {
@@ -77,19 +93,13 @@ class Typewriter extends TextComponent with HasGameRef<TerraDefender> {
 
   Future<void> typeText(String newtext, Duration delay) async {
     for (int i = 0; i < newtext.length; i++) {
-      
       currentText += newtext[i];
 
       await Future.delayed(delay);
-
-      // game.logger.d(currentText);
-      
     }
 
     if (destroyOnTypeCompleted) {
-      
       await Future.delayed(destroyAfterDuration);
-
       removeFromParent();
     }
   }

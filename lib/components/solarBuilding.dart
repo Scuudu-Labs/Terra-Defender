@@ -11,7 +11,7 @@ class SolarBuilding extends SpriteAnimationComponent with HasGameRef<TerraDefend
   SolarBuilding({this.buildingName = "solarTower", position, size}) : super(position: position, size: size);
 
   final double stepTime = 0.08;
-  final hitbox = CustomHitbox(offsetX: 10, offsetY: 10, width: 6, height: 12);
+  final hitbox = CustomHitbox(offsetX: 10, offsetY: 0, width: 6, height: 12);
   bool collected = false;
 
   double towerHealth = 10;
@@ -28,7 +28,7 @@ class SolarBuilding extends SpriteAnimationComponent with HasGameRef<TerraDefend
 
     add(RectangleHitbox(
       position: Vector2(hitbox.offsetX, hitbox.offsetY),
-      size: size / 2,
+      size: Vector2(size.x / 2, size.y),
       collisionType: CollisionType.passive,
     ));
 

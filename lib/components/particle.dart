@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
-import 'package:flame_audio/flame_audio.dart';
 import 'package:terra_defender/terra_defender.dart';
 
 class Particle extends SpriteAnimationComponent with HasGameRef<TerraDefender>, CollisionCallbacks{
@@ -11,8 +10,6 @@ class Particle extends SpriteAnimationComponent with HasGameRef<TerraDefender>, 
   Particle({this.name = "particle", position, size}) : super(position: position, size: size);
 
   final double stepTime = 0.08;
-
-
 
   @override
   FutureOr<void> onLoad() {
@@ -27,5 +24,9 @@ class Particle extends SpriteAnimationComponent with HasGameRef<TerraDefender>, 
     Future.delayed(const Duration(milliseconds: 700), (){removeFromParent();});
 
     return super.onLoad();
+  }
+
+  void setParticleSprite(){
+
   }
 }

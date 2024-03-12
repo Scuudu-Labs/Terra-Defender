@@ -40,6 +40,7 @@ class MainMenu extends StatelessWidget {
                 // Remove the main menu overlay and start the game
                 
                 // game.overlays.remove('MainMenu');
+                if (game.canPlaySound) {game.playSound("onPickup");}
                 game.startGame();
                 
                 // Additional code to start the game goes here

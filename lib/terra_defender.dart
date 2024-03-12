@@ -50,7 +50,7 @@ class TerraDefender extends FlameGame
 
   Random random = Random();
 
-  List<String> levelNames = ["Level_01", "Level_02"];
+  List<String> levelNames = ["Level_01", "Level_02","Level_03","Level_04"];
   int currentLevelIndex = 0;
 
   //Sets the background color to match
@@ -79,7 +79,7 @@ class TerraDefender extends FlameGame
 
     // if (canPlaySound) {playSound("ThemeMusic3");}
 
-    FlameAudio.bgm.play("ThemeMusic3.5.wav");
+    if(canPlaySound){FlameAudio.bgm.play("ThemeMusic3.5.wav");}
 
      _loadLevel();
 
@@ -222,6 +222,8 @@ double randomDoubleInRange(double min, double max) {
 
   void loadNextLevel(){
     //Deleted the level
+    overlays.add('LevelCleared');
+
     removeWhere((component) => component is Levels);
 
     if (currentLevelIndex < levelNames.length - 1) {
@@ -267,6 +269,11 @@ double randomDoubleInRange(double min, double max) {
       // debugMode = true;
     }
     });
+
+        Future.delayed(const Duration(seconds: 1), (){overlays.remove('LevelCleared');});
+
+
+
   }
 
   void loadLevelWithIndex(int levelToLoad){

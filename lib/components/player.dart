@@ -30,6 +30,7 @@ class Player extends SpriteAnimationGroupComponent with HasGameRef<TerraDefender
   double moveSpeed = 100;
   // double moveSpeed = 500;
   double playerHealth = 50;
+  double initialplayerHealth = 50;
 
   Vector2 velocity = Vector2.zero();
 
@@ -141,7 +142,8 @@ class Player extends SpriteAnimationGroupComponent with HasGameRef<TerraDefender
     double citybuildingSpace = 128.00;
     double treesSpace = 96.00;
 
-    position.x = position.x.clamp(width + citybuildingSpace, gameWidth - width - treesSpace);
+    // position.x = position.x.clamp(width + citybuildingSpace, gameWidth - width - treesSpace);
+    position.x = position.x.clamp(width + citybuildingSpace, gameWidth - width);
 
     // Clamp the player's y position to stay within the screen bounds
     // position.y = position.y.clamp(0, screenSize.y - height * 2);

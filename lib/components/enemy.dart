@@ -159,6 +159,9 @@ BulletType setBulletType(){
       case EnemyType.deforester:
         enemyName = "Deforester";
         break;
+      case EnemyType.airPolluter:
+        enemyName = "AirPolluter";
+        break;
       default:
     }
 
@@ -327,6 +330,7 @@ BulletType setBulletType(){
 
   void gotHit(){
 
+    game.screenShake(const Duration(milliseconds: 300));
     if(game.canPlaySound){game.playSound("enemyIsHit");}
     
     enemyHealth --;

@@ -8,14 +8,15 @@ class InDevelopment extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+        final screenSize = MediaQuery.of(context).size;
 
     return Material(
       color: Colors.transparent,
       child: Center(
         child: Container(
           padding: const EdgeInsets.all(10.0),
-          height: 704,
-          width: 1280,
+          height: screenSize.height,
+          width: screenSize.width,
           decoration: const BoxDecoration(
             image: DecorationImage(
               image: AssetImage('assets/images/Background/inDevelopment.png'), // Path to your image file
